@@ -50,9 +50,9 @@ const Signup = ({signup}) => {
   return (
     <div className=' h-[100vh] flex justify-center items-center  '>
 
-      <section className='w-[368px] rounded-2xl m-auto flex items-center justify-center h-[auto] bg-[#1c1c24]'>
-        <form action="m-auto p-[20px] "  onSubmit={submit}>
-                <div className="m-[20px]  flex flex-col gap-[10px]">
+      <section className='w-[307px] lg:w-[368px] p-[20px]  rounded-2xl m-auto flex items-center justify-center h-[auto] bg-[#1c1c24]'>
+        <form action="m-auto w-full " onSubmit={submit}>
+                <div className="flex w-[100%]  flex-col gap-[10px]">
                     <FormField
                     labelName="FullName"
                     placeholder='John Smith'
@@ -93,7 +93,8 @@ const Signup = ({signup}) => {
                     />
 
                     <div className=" text-sm flex justify-between">
-                        <p className='text-[#808191]'>Hav have an account <span  className='text-[#1dc071]'>Sign-in</span></p>
+                        <p className='text-[#808191]'>Hav have an account <span  className='text-[#1dc071]'>
+                          <Link to={"/login"}>Sign-in</Link></span></p>
                         {/* <p className='text-red-500'>Forgot password</p> */}
                     </div>
 

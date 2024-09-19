@@ -26,7 +26,7 @@ const CreateCampaign = () => {
 
   const submit = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:5000/api/campaign/new', form)
+    axios.post('https://fullstack-web2-campaignproject.onrender.com/api/campaign/new', form)
     .then ((res) => {
       console.log(res)
       

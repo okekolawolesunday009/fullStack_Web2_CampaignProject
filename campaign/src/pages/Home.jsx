@@ -1,4 +1,5 @@
 import React from 'react'
+import CustomButton from '../components/CustomButton'
 
 const Home = () => {
   // useStateContext()
@@ -14,10 +15,30 @@ const Home = () => {
 
   // }, address, contract)
    return (
-    <div>
+    <main className=''>
+      <div className="m-auto flex flex-col gap-[20px] items-center justify-center">
+          <h1 className='text-white'> Create Your First Campaign</h1>
+
+          <div className=" flex gap-[20px]">
+            <CustomButton
+            btnType="button"
+            title={'login'}
+            styles = {`bg-[#1dc071]`}                  
 
 
-    </div>
+          />
+
+          <CustomButton
+            btnType="button"
+            title={'signup'}
+            styles = {`bg-[#1dc071]`}                  
+
+
+          />
+        </div>
+      </div>
+      
+    </main>
   )
 }
 

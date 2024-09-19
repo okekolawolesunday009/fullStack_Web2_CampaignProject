@@ -3,7 +3,7 @@ import FormField from '../../components/FormField'
 
 import CustomButton from '../../components/CustomButton'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 
@@ -49,9 +49,9 @@ const Login = ({login, loginState}) => {
     };
   return (
     <div className=' h-[100vh] flex justify-center items-center  '>
-      <section className='w-[287px]  lg:w-[287px]  rounded-2xl m-auto flex items-center justify-center h-[50%] bg-[#1c1c24]'>
-        <form action="m-auto " onSubmit={submit}>
-                <div className="flex flex-col gap-[10px]">
+      <section className='w-[307px] lg:w-[357px] p-[20px]  rounded-2xl m-auto flex items-center justify-center h-[auto] bg-[#1c1c24]'>
+        <form action="m-auto w-full " onSubmit={submit}>
+                <div className="flex w-[100%]  flex-col gap-[10px]">
                     <FormField
                     labelName="Email"
                     placeholder='Johnsmith@toweraig.com'
@@ -77,8 +77,9 @@ const Login = ({login, loginState}) => {
 
                     />
 
-                    <div className=" text-sm flex justify-between">
-                        <p className='text-[#808191]'>Don't have account <span  className='text-[#1dc071]'>Signup</span></p>
+                    <div className=" text-xs flex justify-between">
+                        <p className='text-[rgb(128,129,145)]'>Don't have account <span  className='text-[#1dc071]'>
+                          <Link to={"/signup"}>Signup </Link></span></p>
                         <p className='text-red-500'>Forgot password</p>
                     </div>
 

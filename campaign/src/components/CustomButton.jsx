@@ -1,13 +1,23 @@
 import { css, StyleSheet } from 'aphrodite'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function CustomButton({btnType, title, handleClick, styles}) {
+
+  const navigate = useNavigate()
+  const handleButtonClick = () => {
+    if (btnType === "button") {
+      navigate(`/${title}`);
+    } else {
+      handleClick();
+    }
+  };
   return (
     <div>
         <button
         type={btnType}
         className={`${styles} ${css(buttonStyles.button)}`}
-        onClick={handleClick}
+        onClick={handleButtonClick}
         >
             {title}
             

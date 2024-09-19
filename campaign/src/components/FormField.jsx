@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
             // ':placeholder': {
             //     color:"$4b5264"
             // },
-            minWidth: '330px',
+            minWidth: '150px',
+            height: '50px',
             background: "#1c1c24",
         '@media (max-width: 600px)': {
             padding: "25px",  
