@@ -10,7 +10,7 @@ const signup = async (req, res) => {
         const { fullName, email, role, image, region, password } = req.body
         const existingEmail = await User.findOne({email})
         if (existingEmail) {
-            res.status(400).json({message: 'Email exist. Try new email or Login with Email'})
+            return res.status(400).json({message: 'Email exist. Try new email or Login with Email'})
         }
         //hashing
         const salt = await bycrypt.genSalt(10)
@@ -19,23 +19,28 @@ const signup = async (req, res) => {
         const newUser = new User({
             fullName, email, role: "author", region, password: hashPassword
         })
-        const savedUser = await newUser.save();
+        const user = await newUser.save();
 
         const payload = {
-            userId : savedUser._id
+            userId : user._id
         }
         const exp = {
             expiresIn: '3h'
         }
         const token = jwt.sign(payload,  process.env.SECRET_KEY, exp)
         // console.log(token)
-        res.cookie('token', token).json({savedUser})
+        return res.cookie('token', token, {
+            httpOnly: true,
+            // secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            expires: new Date(Date.now() + 3 * 60 * 60 * 1000) // Optional if you use `expiresIn`
+        }).json({ user });
 
     } catch (err) {
         
-        if (!res.headersSent) {
+       
             return  res.status(500).json({message: 'Internal server Error from Signup '})
-        }
+       
 
     }
 }
@@ -65,12 +70,14 @@ const login = async (req, res) => {
         // console.log(token)
         console.log(token)
 
-        res.cookie('token', token).json({user})
+        return res.cookie('token', token).json({user})
     
     
     } catch (err) {
-        console.error(err)
-        res.status(500).json({message: 'Internal server Error from Signup ', "err": err})
+        
+        if (!res.headersSent) {
+            return  res.status(500).json({message: 'Internal server Error from Signup '})
+        }
 
     }
 
