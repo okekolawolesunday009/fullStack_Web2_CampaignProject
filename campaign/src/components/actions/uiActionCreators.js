@@ -68,15 +68,14 @@ export const loginRequest = (email, password) => async (dispatch) => {
     // dispatch(login(email, password));
     try {
         // const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
-         const response = await axios.post("https://full-stack-web2-campaign-project.vercel.app/login", { email, password })
-        // https://full-stack-web2-campaign-project.vercel.app/signup
+         const response = await axios.post("https://fullstack-web2-campaignproject.onrender.com/api/auth/login", { email, password })
         dispatch(loginSuccess(response.data.user));
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
         toast.success('Succesful Login')
     } catch (error) {
         dispatch(loginFailure(error.response ? error.response.data : error.message));
-        toast.error(error.response ? error.response.data : error.message)
+        toast.error(error.response)
 
     }
 };
@@ -89,6 +88,6 @@ export const SignupRequest = (fullName, email, password, region) => async (dispa
         toast.success('Succesful Registration')
     } catch (error) {
         dispatch(loginFailure(error.response ? error.response.data : error.message));
-        toast.error(error.response ? error.response.data : error.message)
+        toast.error(error.response)
     }
 };
