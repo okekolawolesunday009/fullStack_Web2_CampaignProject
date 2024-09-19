@@ -7,10 +7,10 @@ import { bgStyles } from './NavBar';
 import { css, StyleSheet } from 'aphrodite';
 
 
-const SideBar = () => {
+const SideBar = ({logout}) => {
     const navigate = useNavigate();
 
-    const [isActive, setIsActive] = useState('notification');
+    const [isActive, setIsActive] = useState('dashboard');
     const bg = bgStyles("#1c1c24");
     const bg2 = bgStyles("green");
     let fSize = 30;
@@ -25,6 +25,11 @@ const SideBar = () => {
     const activeColor = bgStyles("green");
 
     const defaultColor = bgStyles("white");
+
+    const handleLogout = () => {
+      logout()
+      console.log("logout")
+    }
 
     const Icon = ({name, icon, isActive, disabled, handleClick}) => (
       <div className={`${css(styles.iconContainer)} ${isActive && isActive === name &&
@@ -72,8 +77,12 @@ const SideBar = () => {
                   if(!link.disable) {
                     setIsActive(link.name);
                     navigate(link.link);
+
                     console.log(link.name)
 
+                } 
+                if (link.name === 'logout') {
+                  handleLogout()
                 }
                 }}
               />

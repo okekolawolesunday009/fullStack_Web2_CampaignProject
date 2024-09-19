@@ -1,5 +1,5 @@
 import { css, StyleSheet } from 'aphrodite'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LuSearch } from 'react-icons/lu'
 import CustomButton from './CustomButton'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,7 +15,8 @@ export const bgStyles = (color) => {
   }
 })
 }
-const NavBar = () => {
+
+const NavBar = ({hideNotificationDrawer, displayNotificationDrawer, displayDrawer}) => {
 
   const navigate = useNavigate();
 
@@ -27,7 +28,9 @@ const NavBar = () => {
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
-
+  useEffect(() => {
+    console.log(displayDrawer)
+  })
   return (
     <div className={`${css(styles.navWrapper)} ${css(styles.navBarContainer)} flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6`}>
       <div className={`lg:flex-1 flex items-center ${css(styles.searchContainer)}`}>
@@ -48,7 +51,7 @@ const NavBar = () => {
       title={address ? 'create a campaign' : 'Connect'}
       styles = {address ? `${css(bgCreate.bgColor, styles.navButton)}` : `${css(bgConnect.bgColor)}`}
       handleClick={() => {
-        if (address) navigate('/create-campaign');
+        if (address) navigate('/campaign/new');
         // else '  ;
       }}
       
@@ -65,14 +68,15 @@ const NavBar = () => {
 
       <div className={`${css(styles.threeDot)}`}>
         <IoReorderThreeOutline 
-        onClick={() => setToggleDrawer(!toggleDrawer)}
+        onClick={() => displayNotificationDrawer()}
         className={`${css(styles.navBar)}`}/>
 
-        <div className={`${css(styles.navBarList)}`}>
+        <div className={`${css(styles.navBarList)} ${displayDrawer === false ? css(styles.hidden) : css(styles.flex)}`}>
+           <p className='text-white text-center' onClick={() => hideNotificationDrawer()}>x</p>
             {navLinks.map((link) => (
 
              <li 
-              className={`${css(styles.list)}`}
+              className={`${css(styles.list)} text-white`}
               key={link.id}
               onClick={() => {
                 setIsActive(link.name);
@@ -91,7 +95,7 @@ const NavBar = () => {
               title={address ? 'create a campaign' : 'Connect'}
               styles = {address ? `${css(bgCreate.bgColor)}` : `${css(bgConnect.bgColor)}`}
               handleClick={() => {
-                if (address) navigate('/create-campaign');
+                if (address) navigate('/campaign/new');
                 // else '  ;
               }}
 
@@ -138,8 +142,9 @@ const styles = StyleSheet.create({
   padding: "10px",
   borderRadius: "100px",
   '@media (max-width: 600px)': {
-    width: "9.4rem",        // Adjust height for smaller screens
-    height: "2rem",
+    width: "15.4rem",        // Adjust height for smaller screens
+    margin: '0 auto',
+    // height: "2rem",
     padding: "6px",
   },
 
@@ -197,18 +202,28 @@ const styles = StyleSheet.create({
   }, 
   navBarList: {
     position: "absolute",
-    top: "60px",
+    top: "5px",
     padding: "10px",
     borderRadius: "10px",
     backgroundColor: "#1c1c24",       // Adjust height for smaller screens
     right: "0",
     left: 0,
-    display: "flex",
+    display: "none",
     flexDirection: "column",
-    gap: "6px"
+    gap: "6px",
+    // zIndex: 9999,
     // width: "100%"
-
+  
   }, 
+
+    // ... other styles,
+    hidden: {
+      display: 'none',
+    },
+    flex: {
+      display: 'flex',
+    },
+  
   threeDot : {
     display: "none",
     '@media (max-width: 600px)': {

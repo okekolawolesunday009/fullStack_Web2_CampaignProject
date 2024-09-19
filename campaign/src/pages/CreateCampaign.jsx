@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import FormField from '../components/FormField'
 import CustomButton from '../components/CustomButton'
 import { bgDefault, bgStyles } from '../components/exports'
+import axios from 'axios'
 
 const CreateCampaign = () => {
   const [form, setForm] = useState({
@@ -23,7 +24,15 @@ const CreateCampaign = () => {
 
   }
 
-  const submit = () => {
+  const submit = (e) => {
+    e.preventDefault()
+    axios.post('http://localhost:5000/api/campaign/new', form)
+    .then ((res) => {
+      console.log(res)
+      
+    }).catch((err) => {
+      console.log(err)
+    })
     
   }
   const bgDefault = bgStyles("#1dc071");
@@ -35,14 +44,14 @@ const CreateCampaign = () => {
       <section className={`section create-campaign' ${css(styles.section)}`}>
         <div className={css(styles.headerContainer)}>
           
-          <header>
-            <h1 className={css(styles.headerTitle)}>Start a Campaign</h1>
+          <header className='text-xl'>
+            <h1 className={`text-sm text-white ${css(styles.headerTitle)}`}>Start a Campaign</h1>
           </header>
          
         </div>
 
 
-          <form action=""  className={css(styles.form)} >
+          <form action=""  className={css(styles.form)} onSubmit={submit} >
 
             <div className={css(styles.formBody)}>
             <FormField
@@ -122,7 +131,8 @@ const CreateCampaign = () => {
               <CustomButton 
               btnType='submit'
               title='Submit new campaign' 
-              styles = {css(bgDefault.bgColor)}/>
+              styles = {css(bgDefault.bgColor)}
+              />
             </div>
           </div>
 
@@ -144,12 +154,7 @@ const styles = StyleSheet.create({
 
 
   },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white'
 
-  },
   headerContainer: {
     display: "flex",
     justifyContent: "center",
@@ -160,8 +165,9 @@ const styles = StyleSheet.create({
     width: '20%',
     margin: '20px auto',
 
-    '@media (max-width: 600px': {
-      minWidth: '380px'
+    '@media (max-width: 600px)': {
+      // minWidth: '380px',
+      width: "50%"
       
     }
 

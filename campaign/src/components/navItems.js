@@ -16,7 +16,7 @@ const navLinks = [
         id:1,
         name: 'dashboard',
         icon: LuLayoutDashboard,
-        link:"/",
+        link:"/dashboard",
         disable: false
         
 
@@ -66,8 +66,8 @@ const navLinks = [
         id:7,
         name: 'logout',
         icon: IoIosLogOut,
-        link:"/",
-        disable: false
+      //   link:"/login",
+      //   disable: false
 
 
      },
