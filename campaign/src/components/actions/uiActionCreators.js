@@ -70,24 +70,25 @@ export const loginRequest = (email, password) => async (dispatch) => {
         // const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
          const response = await axios.post("https://full-stack-web2-campaign-project.vercel.app/login", { email, password })
         // https://full-stack-web2-campaign-project.vercel.app/signup
-        toast.success("Login successful");
         dispatch(loginSuccess(response.data.user));
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
+        toast.success('Succesful Login')
     } catch (error) {
-        toast.error("Login failed");
         dispatch(loginFailure(error.response ? error.response.data : error.message));
+        toast.error(error.response ? error.response.data : error.message)
+
     }
 };
 export const SignupRequest = (fullName, email, password, region) => async (dispatch) => {
     try {
-        const response = await axios.post("https://full-stack-web2-campaign-project.vercel.app/signup", { email, password })
-        toast.success("Signup successful");
+        const response = await axios.post("https://full-stack-web2-campaign-project.vercel.app/signup", {fullName, email, password, region })
         dispatch(loginSuccess(response.data.user))
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
+        toast.success('Succesful Registration')
     } catch (error) {
-        toast.error("Signup failed");
         dispatch(loginFailure(error.response ? error.response.data : error.message));
+        toast.error(error.response ? error.response.data : error.message)
     }
 };
