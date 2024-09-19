@@ -49,7 +49,7 @@ const Login = ({login, loginState}) => {
     };
   return (
     <div className=' h-[100vh] flex justify-center items-center  '>
-      <section className='w-[368px] rounded-2xl m-auto flex items-center justify-center h-[50%] bg-[#1c1c24]'>
+      <section className='w-[287px]  lg:w-[287px]  rounded-2xl m-auto flex items-center justify-center h-[50%] bg-[#1c1c24]'>
         <form action="m-auto " onSubmit={submit}>
                 <div className="flex flex-col gap-[10px]">
                     <FormField
