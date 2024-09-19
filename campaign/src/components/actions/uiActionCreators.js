@@ -81,7 +81,7 @@ export const loginRequest = (email, password) => async (dispatch) => {
 };
 export const SignupRequest = (fullName, email, password, region) => async (dispatch) => {
     try {
-        const response = await axios.post("https://full-stack-web2-campaign-project.vercel.app/signup", {fullName, email, password, region })
+        const response = await axios.post("https://fullstack-web2-campaignproject.onrender.com/api/auth/signup", {fullName, email, password, region })
         dispatch(loginSuccess(response.data.user))
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
