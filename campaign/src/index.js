@@ -8,8 +8,8 @@ import {Provider} from 'react-redux'
 import { applyMiddleware } from 'redux';
 import {Map} from 'immutable'
 import {configureStore} from '@reduxjs/toolkit'
-import rootReducer from './components/reducers/rootReducers';
-import { initialState } from './components/reducers/uiReducers';
+import rootReducer from './reducers/rootReducers';
+import { initialState } from './reducers/uiReducers';
 import { thunk } from 'redux-thunk';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

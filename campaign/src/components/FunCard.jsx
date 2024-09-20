@@ -5,13 +5,20 @@ import './funcard.css';
 import { CiFolderOn } from "react-icons/ci";
 import { FaRegUserCircle } from "react-icons/fa";
 
+
+const pulseAnimation = {
+  '0%': { transform: 'translate(10%, 10%) scale(1)' },
+  '50%': { transform: 'translate(25%, 25%) scale(1.2)' },
+  '100%': { transform: 'translate(10%, 10%) scale(1)' },
+};
+
 function FunCard({campaign,owner, title, decription, target, deadline, amountCollected, image, handleClick}) {
 
     //const remainingDays = daysLeft(deadline)
   return (
 
     <div className={css(styles.cardContianer)}>
-      <img className={`${css(styles.image)} image`} src={campaign.icon} alt={campaign.name}/>
+      <div className='h-[9.9rem]'><img className={`${css(styles.image)} image`} src={campaign.icon} alt={campaign.name}/></div>
       <div className={css(styles.innerCard)}>
         <div className={css(styles.imgCategory)}>
           <CiFolderOn/>
@@ -23,7 +30,7 @@ function FunCard({campaign,owner, title, decription, target, deadline, amountCol
         </div>
 
         <div className={css(styles.block)}>
-          <h3 className={css(styles.block_two)}>{campaign.title}</h3>
+          <h3 className={`text-white`}>{campaign.title}</h3>
           <p style={{color:'#4b5264'}}>{campaign.description}</p>
 
         </div>
@@ -38,7 +45,7 @@ function FunCard({campaign,owner, title, decription, target, deadline, amountCol
 
 
           <div className={css(styles.block)}>
-            <h3 className={css(styles.block_two)}>{campaign.deadline}</h3>
+            <h3 className={`${css(styles.block_two,styles.active)}`}>{campaign.deadline}<span className={css(styles.activeIndicator)}></span></h3>
             <p className={css(styles.block_three)}>Days left</p>
 
           </div>
@@ -89,8 +96,8 @@ const styles = StyleSheet.create({
 
     },
     image:{
-      height: '9.9rem',
-      // width: '100%',
+      height: '100%',
+      width: '100%',
       borderRadius: '15px',
       
       
@@ -112,12 +119,32 @@ const styles = StyleSheet.create({
 
     },
     block_three:{
-      color:'#4b5264'
+      color:'#4b5264',
+      fontSize: '10px'
     },
     block_two:{
-      color:'white'
+      color:'white',
+      fontSize: '12px'
 
-    }
+    },
+    active: {
+      position: "relative"
+    },
+    activeIndicator: {
+      content: '""',
+      position: 'absolute',
+      width: '8px',
+      height: '8px',
+      backgroundColor: 'green',
+      borderRadius: '50%',
+      top: '10%',
+      right: '18px',
+      color: "white",
+      // transform: 'translate(-50%, -50%)',
+      animationName: pulseAnimation,
+      animationDuration: '0.6s',
+      animationIterationCount: 'infinite',
+  },
 
 
 })

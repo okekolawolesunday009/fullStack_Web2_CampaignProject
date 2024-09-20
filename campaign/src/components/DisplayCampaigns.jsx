@@ -7,6 +7,8 @@ import FunCard from './FunCard'
 
 const DisplayCampaigns = ({title, isLoading, campaigns}) => {
 
+  
+
   const handleNavigate = () => {
 
   }

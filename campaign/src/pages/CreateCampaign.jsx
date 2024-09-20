@@ -4,6 +4,9 @@ import FormField from '../components/FormField'
 import CustomButton from '../components/CustomButton'
 import { bgDefault, bgStyles } from '../components/exports'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { FURL } from '../config.js/config'
 
 const CreateCampaign = () => {
   const [form, setForm] = useState({
@@ -24,14 +27,19 @@ const CreateCampaign = () => {
 
   }
 
+  const navigate = useNavigate()
+
   const submit = (e) => {
     e.preventDefault()
-    axios.post('https://fullstack-web2-campaignproject.onrender.com/api/campaign/new', form)
+    axios.post(`${FURL}/api/campiagn/new`, form)
     .then ((res) => {
       console.log(res)
+      toast.success("Compaign succesfully Added")
+      navigate('/dashboard')
       
     }).catch((err) => {
       console.log(err)
+      toast.error("Error adding campaign")
     })
     
   }

@@ -9,7 +9,7 @@ import Login from './pages/login/Login';
 import Signup  from './pages/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {  SignupRequest, logout, loginRequest,  displayNotificationDrawer, hideNotificationDrawer } from './components/actions/uiActionCreators';
+import {  SignupRequest, logout, loginRequest,  displayNotificationDrawer, hideNotificationDrawer } from './actions/uiActionCreators';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -50,8 +50,10 @@ export class App extends Component{
           <Route path='/campaign/new' element={isLoggedIn ? <CreateCampaign/> : <Navigate to="/login"/>}></Route>
           <Route path='/campaigns' element={<Campaign/>}></Route>
           <Route path='/login' element={!isLoggedIn ? <Login login={login} loginState={isLoggedIn} /> : <Navigate to="/dashboard" />} />
-        <Route path='/signup' element={!isLoggedIn ? <Signup signup={signup} /> : <Navigate to="/dashboard" />} />
-        <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
+         <Route path='/signup' element={!isLoggedIn ? <Signup signup={signup} /> : <Navigate to="/dashboard" />} />
+        {/* <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} /> */}
+
+        <Route path='/dashboard' element={<Dashboard />} />
 
                 {/* <Route path='/' element={<Home/>}></Route> */}
 

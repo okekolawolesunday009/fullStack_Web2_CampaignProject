@@ -5,6 +5,7 @@ import CustomButton from '../../components/CustomButton'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { FURL } from '../../config.js/config'
 
 
 const Login = ({login, loginState}) => {
@@ -26,6 +27,7 @@ const Login = ({login, loginState}) => {
         }))
     
       }
+
 
       useEffect(() => {
         if (loginState === true) {

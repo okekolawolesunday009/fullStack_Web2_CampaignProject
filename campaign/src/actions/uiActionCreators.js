@@ -9,6 +9,7 @@ import {
 import { LOGIN_SUCCESS } from './uiActionTypes';
 import { LOGIN_FAILURE } from './uiActionTypes';
 import {toast} from 'react-toastify'
+import { FURL } from '../config.js/config';
 
 
 
@@ -67,8 +68,8 @@ export const bondFailure = (error) => (dispatch) => dispatch(loginFailure(error)
 export const loginRequest = (email, password) => async (dispatch) => {
     // dispatch(login(email, password));
     try {
-        // const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
-         const response = await axios.post("https://fullstack-web2-campaignproject.onrender.com/api/auth/login", { email, password })
+        const response = await axios.post(`${FURL}/api/auth/login`, { email, password })
+        //  const response = await axios.post("https://fullstack-web2-campaignproject.onrender.com/api/auth/login", { email, password })
         dispatch(loginSuccess(response.data.user));
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
@@ -81,7 +82,7 @@ export const loginRequest = (email, password) => async (dispatch) => {
 };
 export const SignupRequest = (fullName, email, password, region) => async (dispatch) => {
     try {
-        const response = await axios.post("https://fullstack-web2-campaignproject.onrender.com/api/auth/signup", {fullName, email, password, region })
+        const response = await axios.post(`${FURL}/api/auth/signup`, {fullName, email, password, region })
         dispatch(loginSuccess(response.data.user))
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))

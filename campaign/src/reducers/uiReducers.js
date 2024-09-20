@@ -1,5 +1,9 @@
 import {Map} from "immutable"
-import { DISPLAY_NOTIFICATION_DRAWER, HIDE_NOTIFICATION_DRAWER, LOGIN_FAILURE, LOGIN_SUCCESS, LOGOUT } from "../actions/uiActionTypes"
+import { 
+    DISPLAY_NOTIFICATION_DRAWER, 
+    HIDE_NOTIFICATION_DRAWER, 
+    LOGIN_FAILURE, LOGIN_SUCCESS, 
+    LOGOUT } from "../actions/uiActionTypes"
 import { userNormalizer } from "../schema/user"
 
 

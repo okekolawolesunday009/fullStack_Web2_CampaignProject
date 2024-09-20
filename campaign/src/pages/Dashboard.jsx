@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DisplayCampaigns from '../components/DisplayCampaigns'
 import campaigns from '../components/campaigns'
 import { css, StyleSheet } from 'aphrodite'
+import axios from 'axios'
 
 
 const Dashboard = () => {
+
+  const [campaignss, setCampaignss] = useState()
+
+  useEffect(() => {
+    // axios.post()
+  })
   return (
     <div className={`section ${css(styles.dashboard)}`} >
         <DisplayCampaigns
