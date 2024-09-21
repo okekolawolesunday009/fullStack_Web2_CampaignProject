@@ -15,7 +15,11 @@ const connectDB = () => {
     // Use the environment variable URL if it exists; otherwise, use the constructed URL
     const finalDBURL = DBURL || dburl;
 
-    mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(DBURL, { 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 5000
+    })
     .then(() => {
         console.log(`Server is up and running on port ${process.env.PORT}
             and ${dburl}`);

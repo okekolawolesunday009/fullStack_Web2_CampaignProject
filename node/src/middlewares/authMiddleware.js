@@ -24,11 +24,11 @@ const authMiddleware = async (req, res, next) => {
             
         }
         req.user = user
-        // console.log(user, "auth2")
+        console.log(user, "auth2")
         next()
     } catch (err) {
         if (!res.headersSent) {
-            res.status(401).json({ message: 'Unauthorized' });
+            res.status(401).json({ message: 'Unauthorized from Auth' });
         }
     }
 

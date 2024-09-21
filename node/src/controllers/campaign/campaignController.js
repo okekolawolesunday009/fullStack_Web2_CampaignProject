@@ -1,6 +1,7 @@
-const Campaign = require('../models/campaignModel');
-const Deadline = require('../models/deadlineModel');
-const Target = require('../models/targetModel')
+const Campaign = require('../../models/campaignModel');
+const Deadline = require('../../models/deadlineModel');
+const Target = require('../../models/targetModel')
+const {checkDeadline} = require('../../config.js/checkDeadline')
 
 const getAll = async (req, res) => {
     try {
@@ -33,7 +34,7 @@ const addCampaign = async (req, res) => {
         if ((req.user.role !== 'author')) {
             res.status(403).json({message: "UnAthorized to add Campaign"})
         }
-        const { name,description, category, target, deadline,image } = req.body
+        const { name, description, category, target, deadline,image } = req.body
         // console.log(req.body)
 
 
@@ -44,12 +45,7 @@ const addCampaign = async (req, res) => {
             image,
             user: req.user._id
         })
-        const currentDate = new Date()
-        const checkDeadline = (deadlineDate) => {
-            if (deadline > currentDate ) return false
-            else return true
-        }
-       
+        
         await newCampaign.save()
         const newDeadline = new Deadline ({
             campaignId: newCampaign._id,
@@ -64,6 +60,7 @@ const addCampaign = async (req, res) => {
             targetState : false
 
         })
+        console.log(newTarget);
         await newDeadline.save()
         newCampaign.deadline.push(newDeadline._id)
         await newTarget.save()
@@ -78,6 +75,8 @@ const addCampaign = async (req, res) => {
         res.status(500).json({message: "Internal Server Error: AddCampaign"})
     }
 }
+
+
 
 module.exports = {
     getAll,
