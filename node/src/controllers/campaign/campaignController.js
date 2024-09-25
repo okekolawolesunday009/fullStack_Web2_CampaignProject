@@ -35,7 +35,7 @@ const addCampaign = async (req, res) => {
             res.status(403).json({message: "UnAthorized to add Campaign"})
         }
         const { name, description, category, target, deadline,image } = req.body
-        // console.log(req.body)
+        console.log(req.body)
 
 
         const newCampaign = new Campaign ({

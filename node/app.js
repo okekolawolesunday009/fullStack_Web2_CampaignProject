@@ -18,8 +18,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 const corsOption = {
-    // origin: 'http://localhost:3000',
-    origin: 'https://full-stack-web2-campaign-project.vercel.app',
+    origin: 'http://localhost:3000',
+    // origin: 'https://full-stack-web2-campaign-project.vercel.app' || 'http://localhost:3000',
     credentials: true,
     optionSucessStatus: 200
 }

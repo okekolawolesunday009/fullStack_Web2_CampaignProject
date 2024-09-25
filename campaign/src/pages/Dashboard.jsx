@@ -10,7 +10,6 @@ const Dashboard = () => {
   const [campaignss, setCampaignss] = useState()
 
   useEffect(() => {
-    // axios.post()
   })
   return (
     <div className={`section ${css(styles.dashboard)}`} >

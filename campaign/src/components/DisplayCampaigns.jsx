@@ -10,6 +10,7 @@ const DisplayCampaigns = ({title, isLoading, campaigns}) => {
   
 
   const handleNavigate = () => {
+    console.log("clicked")
 
   }
   return (
@@ -30,7 +31,7 @@ const DisplayCampaigns = ({title, isLoading, campaigns}) => {
             ((campaign) => <FunCard
               key = {campaign.id}
               campaign = {campaign}
-              handleClick ={() => handleNavigate(campaign.name)}
+              handleClick ={handleNavigate}
 
               />)
           }

@@ -9,10 +9,11 @@ import Login from './pages/login/Login';
 import Signup  from './pages/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {  SignupRequest, logout, loginRequest,  displayNotificationDrawer, hideNotificationDrawer } from './actions/uiActionCreators';
+import {  SignupRequest, logout, loginRequest,  displayNotificationDrawer, hideNotificationDrawer } from './actions/ui/uiActionCreators';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { addCampaignRequest, fetchCampaignRequest } from './actions/campaign/campaignActionCreators';
 
 
 
@@ -28,7 +29,10 @@ export class App extends Component{
   }
   render () {
 
-  const {login, isLoggedIn, displayDrawer, logout, signup, displayNotificationDrawer, hideNotificationDrawer} = this.props
+  const {login, isLoggedIn, displayDrawer, logout, signup, fetchCampaign, displayNotificationDrawer, 
+    hideNotificationDrawer,
+    addCampaign
+  } = this.props
   
     return (
     //
@@ -47,11 +51,11 @@ export class App extends Component{
         <Routes>
           <Route path='/' element={<Home/>}></Route>
           <Route path='/profile' element={isLoggedIn ? <Profile/> : <Navigate to="/login"/>}></Route>
-          <Route path='/campaign/new' element={isLoggedIn ? <CreateCampaign/> : <Navigate to="/login"/>}></Route>
+          <Route path='/campaign/new' element={isLoggedIn ? <CreateCampaign addCampaign={addCampaign}/> : <Navigate to="/login"/>}></Route>
           <Route path='/campaigns' element={<Campaign/>}></Route>
           <Route path='/login' element={!isLoggedIn ? <Login login={login} loginState={isLoggedIn} /> : <Navigate to="/dashboard" />} />
          <Route path='/signup' element={!isLoggedIn ? <Signup signup={signup} /> : <Navigate to="/dashboard" />} />
-        {/* <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} /> */}
+        <Route path='/dashboard' element={isLoggedIn ? <Dashboard fetchCampaign={fetchCampaign}/> : <Navigate to="/login" />} />
 
         <Route path='/dashboard' element={<Dashboard />} />
 
@@ -105,7 +109,9 @@ displayNotificationDrawer,
 hideNotificationDrawer,
 login:loginRequest,
 signup:SignupRequest,
-logout: logout
+logout: logout,
+addCampaign: addCampaignRequest,
+fetchCampaign: fetchCampaignRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

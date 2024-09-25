@@ -23,7 +23,7 @@ const updateCampaign = async (req, res) => {
         const { name, description, category, target, deadline,image } = req.body
 
 
-        const updatedCampaign = await Campaign.findById(
+        const updatedCampaign = await Campaign.findByIdAndUpdate(
             req.params.id, {
                 name, 
                 description, 
@@ -34,7 +34,6 @@ const updateCampaign = async (req, res) => {
             {new: true}
         )
 
-        const newUpdatedCampaign = await updatedCampaign.save()
         const newDeadline = await Deadline.findOne({campaignId: campaign._id})
         if (!newDeadline) {
             newDeadline = new Deadline({ campaignId: campaign._id });
@@ -51,10 +50,12 @@ const updateCampaign = async (req, res) => {
 
         await newTarget.save()
         await newDeadline.save()
+        await updatedCampaign.save()
+
 
 
        
-        res.status(200).json(newUpdatedCampaign);
+        res.status(200).json(updatedCampaign);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error: Updating Campaign" });

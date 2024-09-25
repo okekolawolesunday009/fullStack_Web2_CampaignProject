@@ -10,7 +10,7 @@ const URL = (server) => {
         return 'https://fullstack-web2-campaignproject.onrender.com'
       case "DEV":
         // return process.env.DEVURL;
-        return 'http://localhost:3000'
+        return 'http://localhost:5000'
       default:
         throw new Error(`Unknown server type: ${server}`);
     }

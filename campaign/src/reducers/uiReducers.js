@@ -3,7 +3,7 @@ import {
     DISPLAY_NOTIFICATION_DRAWER, 
     HIDE_NOTIFICATION_DRAWER, 
     LOGIN_FAILURE, LOGIN_SUCCESS, 
-    LOGOUT } from "../actions/uiActionTypes"
+    LOGOUT } from "../actions/ui/uiActionTypes"
 import { userNormalizer } from "../schema/user"
 
 

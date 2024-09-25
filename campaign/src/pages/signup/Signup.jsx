@@ -28,29 +28,13 @@ const Signup = ({signup}) => {
       const submit = (e) => {
         e.preventDefault()
         console.log(formData)
-        // axios.post('http://localhost:5000/api/auth/signup', formData)
-        // .then ((res) => {
-        //   console.log(res)
-        //   toast.success("Signup successful")
-        //   navigate('/dashboard')
-          
-          
-        // }).catch((err) => {
-        //   if (err.response && err.response.data && err.response.data.message) {
-        //     console.error(err.response.data.message);
-        //     toast.error(err.response.data.message);
-        //   } else {
-        //       // Fallback to a generic error message if no specific message is provided
-        //       toast.error("Error signing up");
-        //   }
-        // })
         signup(fullName,email, password, region)
         console.log(signup(fullName,email, password, region))
       }
   return (
-    <div className=' h-[100vh] flex justify-center items-center  '>
-
-      <section className='w-[307px] lg:w-[368px] p-[20px]  rounded-2xl m-auto flex items-center justify-center h-[auto] bg-[#1c1c24]'>
+    <div className=' min-h-screen flex justify-center items-center  '>
+    <section className='w-[95%] max-w-md p-8 rounded-2xl bg-[#1c1c24] shadow-lg'>
+    <h2 className='text-2xl font-bold text-center text-white mb-6'>Register</h2>
         <form action="m-auto w-full " onSubmit={submit}>
                 <div className="flex w-[100%]  flex-col gap-[10px]">
                     <FormField

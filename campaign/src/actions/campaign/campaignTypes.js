@@ -1,0 +1,8 @@
+
+export const CREATE_CAMPAIGN = 'CREATE_CAMPAIGN';
+
+export const UPDATE_CAMPAIGN = 'UPDATE_CAMP';
+
+export const DELETE_CAMPAIGN = 'DELETE_CAMPAIGN';
+
+export const FETCH_CAMPAIGN = 'FETCH_CAMPAIGN';

@@ -4,20 +4,14 @@ import { useNavigate } from 'react-router-dom'
 
 function CustomButton({btnType, title, handleClick, styles}) {
 
-  const navigate = useNavigate()
-  const handleButtonClick = () => {
-    if (btnType === "button") {
-      navigate(`/${title}`);
-    } else {
-      handleClick();
-    }
-  };
+  const navigate = useNavigate();
+    
   return (
     <div>
         <button
         type={btnType}
         className={`${styles} ${css(buttonStyles.button)}`}
-        onClick={handleButtonClick}
+        onClick={handleClick}
         >
             {title}
             

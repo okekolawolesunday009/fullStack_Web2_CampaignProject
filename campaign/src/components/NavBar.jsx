@@ -31,6 +31,13 @@ const NavBar = ({hideNotificationDrawer, displayNotificationDrawer, displayDrawe
   useEffect(() => {
     console.log(displayDrawer)
   })
+
+  const handleNavLink = () => {
+    if (address) {
+      navigate('/campaign/new')
+    }
+
+  }
   return (
     <div className={`${css(styles.navWrapper)} ${css(styles.navBarContainer)} flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6`}>
       <div className={`lg:flex-1 flex items-center ${css(styles.searchContainer)}`}>
@@ -50,10 +57,7 @@ const NavBar = ({hideNotificationDrawer, displayNotificationDrawer, displayDrawe
       btnType="button"
       title={address ? 'create a campaign' : 'Connect'}
       styles = {address ? `${css(bgCreate.bgColor, styles.navButton)}` : `${css(bgConnect.bgColor)}`}
-      handleClick={() => {
-        if (address) navigate('/campaign/new');
-        // else '  ;
-      }}
+      handleClick={handleNavLink}
       
       
       />
@@ -94,10 +98,8 @@ const NavBar = ({hideNotificationDrawer, displayNotificationDrawer, displayDrawe
               btnType="button"
               title={address ? 'create a campaign' : 'Connect'}
               styles = {address ? `${css(bgCreate.bgColor)}` : `${css(bgConnect.bgColor)}`}
-              handleClick={() => {
-                if (address) navigate('/campaign/new');
-                // else '  ;
-              }}
+              handleClick={handleNavLink}
+
 
 
               />

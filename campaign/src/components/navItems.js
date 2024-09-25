@@ -41,14 +41,14 @@ const navLinks = [
       id:4,
       name: 'withdraw',
       icon: PiHandWithdraw,
-      link:"/",
+      link:"/campaign/new",
       disable: true
    },
      {
         id:5,
         name: 'campaign',
         icon: MdOutlineCampaign,
-        link:"/",
+        link:"/campaign/new",
         disable: false
 
 

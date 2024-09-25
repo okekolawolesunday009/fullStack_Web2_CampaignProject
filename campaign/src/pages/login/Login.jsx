@@ -1,108 +1,91 @@
-import React, { useEffect, useState } from 'react'
-import FormField from '../../components/FormField'
+import React, { useEffect, useState } from 'react';
+import FormField from '../../components/FormField';
+import CustomButton from '../../components/CustomButton';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { FURL } from '../../config.js/config';
 
-import CustomButton from '../../components/CustomButton'
-import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { FURL } from '../../config.js/config'
+const Login = ({ login, loginState }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
+  const navigate = useNavigate();
 
-const Login = ({login, loginState}) => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    })
+  const { email, password } = formData;
 
-    const navigate = useNavigate()
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
+  useEffect(() => {
+    if (loginState === true) {
+      console.log('User is logged in:', loginState);
+      navigate('/dashboard');
+    }
+  });
 
-    const {email, password} = formData
-
-    const handleChange = (e) => {
-        setFormData((prev) => ({
-          ...prev,
-          [e.target.name] : e.target.value
-    
-        }))
-    
+  const submit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      if (loginState === true) {
+        console.log('User is logged in:', loginState);
+        navigate('/dashboard');
       }
+    } catch (error) {
+      console.error('Login failed:', error);
+      toast.error('Error Signing in');
+    }
+  };
 
-
-      useEffect(() => {
-        if (loginState === true) {
-          console.log('User is logged in:', loginState);
-          navigate('/dashboard');
-        }
-      })
-    const submit = async (e) => {
-        e.preventDefault();
-
-        try {
-            // Call the login function passed via props
-            await login(email, password);
-
-            // Check if the loginState is updated correctly (you may want to handle this differently)
-           
-        } catch (error) {
-            console.error('Login failed:', error);
-            toast.error('Error Signing in');
-        }
-    };
   return (
-    <div className=' h-[100vh] flex justify-center items-center  '>
-      <section className='w-[307px] lg:w-[357px] p-[20px]  rounded-2xl m-auto flex items-center justify-center h-[auto] bg-[#1c1c24]'>
-        <form action="m-auto w-full " onSubmit={submit}>
-                <div className="flex w-[100%]  flex-col gap-[10px]">
-                    <FormField
-                    labelName="Email"
-                    placeholder='Johnsmith@toweraig.com'
-                    inputType='email'
-                    name = 'email'
-                    id = 'email'
-                    value={email}
-                    handleChange ={handleChange}
-
-
-
-                    />
-                    <FormField
-                    labelName="Password"
-                    placeholder='password'
-                    inputType='passwrd'
-                    name = 'password'
-                    id = 'password'
-                    value={password}
-                    handleChange ={handleChange}
-
-
-
-                    />
-
-                    <div className=" text-xs flex justify-between">
-                        <p className='text-[rgb(128,129,145)]'>Don't have account <span  className='text-[#1dc071]'>
-                          <Link to={"/signup"}>Signup </Link></span></p>
-                        <p className='text-red-500'>Forgot password</p>
-                    </div>
-
-                    <div className='flex m-auto justify-between'>
-                        <CustomButton
-
-                        btnType="submit"
-                        title={'login'}
-                        styles = {`bg-[#1dc071]`}                       
-                    
-                    />
-
-                    
-                    </div>
-                </div>
-
-            </form>
+    <div className='min-h-screen flex items-center justify-center'>
+      <section className='w-[95%] max-w-md p-8 rounded-2xl bg-[#1c1c24] shadow-lg'>
+        <h2 className='text-2xl font-bold text-center text-white mb-6'>Login</h2>
+        <form className='w-full' onSubmit={submit}>
+          <div className='flex flex-col gap-4'>
+            <FormField
+              labelName="Email"
+              placeholder='johnsmith@toweraig.com'
+              inputType='email'
+              name='email'
+              id='email'
+              value={email}
+              handleChange={handleChange}
+            />
+            <FormField
+              labelName="Password"
+              placeholder='password'
+              inputType='password'
+              name='password'
+              id='password'
+              value={password}
+              handleChange={handleChange}
+            />
+            <div className='text-xs flex justify-between items-center'>
+              <p className='text-gray-400'>
+                Don't have an account? 
+                <Link to="/signup" className='text-[#1dc071] ml-1'>Signup</Link>
+              </p>
+              <p className='text-red-500 cursor-pointer'>Forgot password?</p>
+            </div>
+            <CustomButton
+              btnType="submit"
+              title={'Login'}
+              styles={`bg-[#1dc071] text-white py-2 mt-4`
+              }
+            />
+          </div>
+        </form>
       </section>
-
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

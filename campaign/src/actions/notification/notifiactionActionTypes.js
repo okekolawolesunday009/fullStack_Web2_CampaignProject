@@ -1,0 +1,14 @@
+export const MARK_AS_READ = 'MARK_AS_READ';
+export const  SET_TYPE_FILTER = 'SET_TYPE_FILTER';
+export const FETCH_NOTIFICATIONS_SUCCESS = 'FETCH_NOTIFICATIONS_SUCCESS'
+
+
+// Action Types
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
+export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION';
+export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
+
+export const NotificationTypeFilter = {
+    TARGET:'TARGET',
+    DEADLINE:'DEADLINE'
+}

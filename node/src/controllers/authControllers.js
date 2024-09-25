@@ -34,7 +34,7 @@ const signup = async (req, res) => {
             // secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
             expires: new Date(Date.now() + 3 * 60 * 60 * 1000) // Optional if you use `expiresIn`
-        }).json({ user });
+        }).json({ token});
 
     } catch (err) {
         
@@ -70,7 +70,7 @@ const login = async (req, res) => {
         // console.log(token)
         console.log(token)
 
-        return res.cookie('token', token).json({user})
+        return res.cookie('token', token).json({token})
     
     
     } catch (err) {

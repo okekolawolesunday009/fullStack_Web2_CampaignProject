@@ -8,10 +8,10 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FURL } from '../config.js/config'
 
-const CreateCampaign = () => {
+const CreateCampaign = ({addCampaign}) => {
   const [form, setForm] = useState({
-    fname: "",
-    title: '',
+    name: "",
+    category: '',
     description: '',
     target: '',
     deadline: '',
@@ -29,24 +29,17 @@ const CreateCampaign = () => {
 
   const navigate = useNavigate()
 
-  const submit = (e) => {
-    e.preventDefault()
-    axios.post(`${FURL}/api/campiagn/new`, form)
-    .then ((res) => {
-      console.log(res)
-      toast.success("Compaign succesfully Added")
-      navigate('/dashboard')
-      
-    }).catch((err) => {
-      console.log(err)
-      toast.error("Error adding campaign")
-    })
-    
-  }
   const bgDefault = bgStyles("#1dc071");
 
 
-  const {fname, title, description, target, deadline, image} = form;
+  const {name, category, description, target, deadline, image} = form;
+
+  const submit = (e) => {
+    e.preventDefault()
+    addCampaign(name, category, description, target, deadline, image)
+    // if ()
+    navigate('/dashboard')
+  }
   return (
     <div className={css(styles.container)}>
       <section className={`section create-campaign' ${css(styles.section)}`}>
@@ -63,12 +56,12 @@ const CreateCampaign = () => {
 
             <div className={css(styles.formBody)}>
             <FormField
-              labelName="Full Name"
-              placeholder='John Smith'
+             labelName="Campaign Name"
+              placeholder='Food Fest'
               inputType='text'
-              name = 'fname'
-              id = 'fname'
-              value={fname}
+              name = 'name'
+              id = 'name'
+              value={name}
               handleChange ={handleChange}
 
 
@@ -76,12 +69,12 @@ const CreateCampaign = () => {
             />
 
             <FormField
-              labelName="Campaign Name"
+              labelName="Campaign Category"
               placeholder='Food Fest'
               inputType='text'
-              value={title}
-              name = 'title'
-              id = 'title'
+              value={category}
+              name = 'category'
+              id = 'category'
               handleChange ={handleChange}
 
 
@@ -89,9 +82,9 @@ const CreateCampaign = () => {
             <FormField
               labelName="Story*"
               placeholder='Food Fest'
-              isTextArea
-              name="story"
-              id = 'story'
+              inputType='text'
+              name="description"
+              id = 'description'
               value={description}
               handleChange ={handleChange}
 
@@ -115,7 +108,7 @@ const CreateCampaign = () => {
              <FormField
               labelName="End Date*"
               placeholder='12/08/24'
-              inputType='date'
+              inputType='datetime-local'
               value={deadline}
               handleChange ={handleChange}
               name = 'deadline'
@@ -229,5 +222,6 @@ const styles = StyleSheet.create({
   }
 
 })
+
 
 export default CreateCampaign
