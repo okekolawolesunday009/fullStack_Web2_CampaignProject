@@ -55,7 +55,7 @@ export class App extends Component{
           <Route path='/campaigns' element={<Campaign/>}></Route>
           <Route path='/login' element={!isLoggedIn ? <Login login={login} loginState={isLoggedIn} /> : <Navigate to="/dashboard" />} />
          <Route path='/signup' element={!isLoggedIn ? <Signup signup={signup} /> : <Navigate to="/dashboard" />} />
-        <Route path='/dashboard' element={isLoggedIn ? <Dashboard fetchCampaign={fetchCampaign}/> : <Navigate to="/login" />} />
+        <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
 
         <Route path='/dashboard' element={<Dashboard />} />
 
@@ -111,7 +111,6 @@ login:loginRequest,
 signup:SignupRequest,
 logout: logout,
 addCampaign: addCampaignRequest,
-fetchCampaign: fetchCampaignRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

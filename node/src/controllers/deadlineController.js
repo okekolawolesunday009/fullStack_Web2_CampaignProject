@@ -1,6 +1,7 @@
 const moongose = require('mongoose')
 const Deadlines = require('../models/deadlineModel')
-const Campaign = require('../models/campaignModel')
+const Campaign = require('../models/campaignModel');
+const Deadline = require('../models/deadlineModel');
 
 async function updateCampaignStatus() {
     console.log("deadline check start")
@@ -30,4 +31,25 @@ async function updateCampaignStatus() {
     }
 }
 
-module.exports = updateCampaignStatus
+// const getDeadlineById = async (req, res) => {
+//     try {
+
+//         const { deadlineId } = req.params;
+//         const deadline = await Deadline.findById(deadlineId)
+//         if (!deadline) {
+//             res.status(404).json({message: "deadline Not Found"})
+//         }
+//         res.status(200).json({deadline})
+//     } catch (err) {
+//         if (!res.headersSent) {
+//             return  res.status(500).json({message: 'Internal server Error from Signup '})
+//         }
+
+
+//     }
+// }
+
+
+
+
+module.exports = {updateCampaignStatus}

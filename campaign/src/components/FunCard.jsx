@@ -1,10 +1,12 @@
 
 import { css, StyleSheet } from 'aphrodite';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiBorderRadius } from 'react-icons/bi';
 import './funcard.css';
 import { CiFolderOn } from 'react-icons/ci';
 import { FaRegUserCircle } from 'react-icons/fa';
+import { FURL } from '../config.js/config'
+import axios from 'axios';
 
 const pulseAnimation = {
   '0%': { transform: 'translate(10%, 10%) scale(1)' },
@@ -12,18 +14,15 @@ const pulseAnimation = {
   '100%': { transform: 'translate(10%, 10%) scale(1)' },
 };
 
-function FunCard({ campaign,  }) {
-  // Calculate days left (uncomment if needed)
-  // const remainingDays = daysLeft(deadline);
-
-  // const onHandleClick = () => {
-  //   handleClick()   
-  // }
-
+function FunCard({ campaign }) {
+  console.log(campaign.target)
+   
+ 
+  
   return (
     <div className={css(styles.cardContainer)} >
       <div className={css(styles.imageContainer)}>
-        <img className={css(styles.image)} src={campaign.icon} alt={campaign.name} />
+        <img className={css(styles.image)} src={campaign.image} alt={campaign.name} />
       </div>
       <div className={css(styles.innerCard)}>
         <div className={css(styles.imgCategory)}>
@@ -31,20 +30,20 @@ function FunCard({ campaign,  }) {
           <p className={css(styles.category)}>{campaign.category}</p>
         </div>
         <div className={css(styles.block)}>
-          <h3 className={css(styles.title)}>{campaign.title}</h3>
+          <h3 className={css(styles.title)}>{campaign.name}</h3>
           <p className={css(styles.description)}>{campaign.description}</p>
         </div>
         <div className={css(styles.blockDetails)}>
           <div className={css(styles.detailItem)}>
-            <h3 className={css(styles.amount)}>{campaign.amountCollected}</h3>
+            <h3 className={css(styles.amount)}>${campaign.target ? campaign.target.toString(): "" }</h3>
             <p className={css(styles.label)}>Amount Received</p>
           </div>
           <div className={css(styles.detailItem)}>
             <h3 className={`${css(styles.amount)} ${css(styles.active)}`}>
-              {campaign.deadline}
-              <span className={css(styles.activeIndicator)}></span>
+              {campaign.deadline > 0 ? campaign.deadline : "Closed"}
+              <span className={`${css(campaign.deadline > 0 ? styles.activeIndicator: '')}`}></span>
             </h3>
-            <p className={css(styles.label)}>Days left</p>
+            {campaign.deadline > 0 ? <p className={css(styles.label)}>Days left</p> : ""}
           </div>
         </div>
       </div>

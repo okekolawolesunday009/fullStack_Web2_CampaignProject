@@ -72,7 +72,7 @@ export const loginRequest = (email, password) => async (dispatch) => {
         //  const response = await axios.post("https://fullstack-web2-campaignproject.onrender.com/api/auth/login", { email, password })
         dispatch(loginSuccess(response.data.token));
         // console.log(dispatch(loginSuccess(response.data.user)))
-        console.log(loginSuccess(response.data.token, "login"))
+        // console.log(loginSuccess(response.data.token, "login"))
         toast.success('Succesful Login')
         localStorage.setItem('token', response.data.token);
     } catch (error) {
@@ -86,7 +86,7 @@ export const SignupRequest = (fullName, email, password, region) => async (dispa
         const response = await axios.post(`${FURL}/api/auth/signup`, {fullName, email, password, region })
         dispatch(loginSuccess(response.data.token))
         // console.log(dispatch(loginSuccess(response.data.user)))
-        console.log(loginSuccess(response.data))
+        // console.log(loginSuccess(response.data))ss
         toast.success('Succesful Registration')
         localStorage.setItem('token', response.data.token);
     } catch (error) {

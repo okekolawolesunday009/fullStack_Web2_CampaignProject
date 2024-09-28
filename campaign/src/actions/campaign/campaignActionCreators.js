@@ -56,9 +56,9 @@ export const bondAddCampaignFailure = (error) => (dispatch) => dispatch(failureR
 
 export const fetchCampaignRequest = () => async (dispatch) => {
     try {
-        const response = await axios.get(`${FURL}/api/campaigns/`)
-        dispatch(updateCampaignSuccess(response.data.campaign));
-        // console.log(dispatch(loginSuccess(response.data.user)))
+        const response = await axios.get(`${FURL}/api/campaign`)
+        dispatch(fetchCampaignSuccess(response.data.campaigns));
+        // console.log(dispatch(fetchCampaignSuccess(response.data.campaigns)))
         // console.log(loginSuccess(response.data.user))
         toast.success('Succesfully fetched All Campaigns')
         dispatch()

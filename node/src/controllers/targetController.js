@@ -61,4 +61,20 @@ const updateTargetStatus = async (req, res) =>{//target status, also sends mail
     }
 }
 
-module.exports = {updateTargetStatus}
+const getTargetById = async (req, res) => {
+    try {
+
+        const { campaignId } = req.params;
+        const target = await Target.findById(campaignId)
+        if (!target) {
+            res.status(404).json({message: "target Not Found"})
+        }
+        res.status(200).json({target})
+    } catch (err) {
+        res.status(500).json({message: "Internal Server Error - getByIdTarget"})
+
+    }
+}
+
+
+module.exports = {updateTargetStatus, getTargetById}

@@ -1,7 +1,7 @@
 import {Map} from "immutable"
 import { 
     CREATE_CAMPAIGN, UPDATE_CAMPAIGN, DELETE_CAMPAIGN,
-    FETCH_CAMPAIGN
+    FETCH_CAMPAIGN, FETCH_CAMPAIGN_REQUEST
 } from '../actions/campaign/campaignTypes'
 import { userNormalizer } from "../schema/user"
 import { UPDATE_DEADLINE, UPDATE_TARGET } from "../actions/campaign/deadline/deadlineTargetTypes"
@@ -9,15 +9,23 @@ import { UPDATE_DEADLINE, UPDATE_TARGET } from "../actions/campaign/deadline/dea
 
 export const initialState = {
     campaigns: [],
+    loading: false,
     isCampaignAdded: false,
     isCampaignDeleted: false,
 }
  export const campaignReducer = (state= initialState, action) => {
     switch(action.type) {
+      case FETCH_CAMPAIGN_REQUEST:
+        return {
+            ...state,
+            campaigns: action.campaign,
+            loading: true
+        }
         case FETCH_CAMPAIGN:
             return {
                 ...state,
-                campaigns: action.campaign
+                campaigns: action.campaign,
+                loading: false
             }
         case CREATE_CAMPAIGN:
             return {

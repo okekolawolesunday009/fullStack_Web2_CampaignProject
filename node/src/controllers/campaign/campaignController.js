@@ -3,16 +3,49 @@ const Deadline = require('../../models/deadlineModel');
 const Target = require('../../models/targetModel')
 const {checkDeadline} = require('../../config.js/checkDeadline')
 
+// const getAll = async (req, res) => {
+//     try {
+//         const campaigns = await Campaign.find();
+//         res.status(200).json({campaigns});
+        
+//     } catch (err) {
+//         res.status(500).json({message: "Internal Server Error - getCampaign"})
+//     }
+// }
+
+
 const getAll = async (req, res) => {
     try {
-        const products = await Campaign.find();
-        res.status(200).json({products});
+        const campaigns = await Campaign.find();
+        const campaignIds = campaigns.map(campaign => campaign._id)
+        const currentDate = new Date();
+        // Difference in milliseconds
+
+        const deadlines = await Deadline.find({campaignId: {$in: campaignIds}})
+        const targets = await Target.find({campaignId: {$in: campaignIds}})
+
+        const campaignsWithDeadlines = campaigns.map(campaign => {// this is now, mapped tru the campaign to create a new campaign and then map deadlines and added it to it
+            const campaignDeadline = deadlines.find(deadline => 
+                String(deadline.campaignId) === String(campaign._id));
+
+                 const targetBalance = targets.find(target => 
+                    String(target.campaignId) === String(campaign._id));
+                    return {
+                        ...campaign.toObject(),
+                        target: targetBalance ? targetBalance.targetDeposit : null,
+                        deadline: campaignDeadline ? 
+                        Math.ceil((campaignDeadline.deadlineDate - currentDate)/  (1000 * 60 * 60 * 24)) : null,
+                    }
+        })
+
+        console.log(deadlines, campaignsWithDeadlines)
+        res.status(200).json({campaigns});
         
     } catch (err) {
+        console.log(err)
         res.status(500).json({message: "Internal Server Error - getCampaign"})
     }
 }
-
 const getById = async (req, res) => {
     try {
         const campaign = await Campaign.findById(req.params.id)

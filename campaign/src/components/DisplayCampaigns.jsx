@@ -13,6 +13,7 @@ const DisplayCampaigns = ({title, isLoading, campaigns}) => {
     console.log("clicked")
 
   }
+
   return (
     <div className={css(styles.displayContainer)} >
       <h1 className={css(styles.headerTitle)}>
@@ -28,11 +29,9 @@ const DisplayCampaigns = ({title, isLoading, campaigns}) => {
         )}
 
           {!isLoading && campaigns.length > 0 && campaigns.map
-            ((campaign) => <FunCard
-              key = {campaign.id}
-              campaign = {campaign}
+            ((campaigns) => <FunCard
+              campaign = {campaigns}
               handleClick ={handleNavigate}
-
               />)
           }
               

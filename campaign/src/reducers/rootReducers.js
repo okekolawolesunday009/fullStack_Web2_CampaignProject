@@ -6,7 +6,7 @@ import notificationsReducer from "./notificationReducers";
 
 const rootReducer = combineReducers({
     ui: uiReducer,
-    campaign: campaignReducer,
+    campaigns: campaignReducer,
     notification: notificationsReducer
 })
 export default rootReducer
