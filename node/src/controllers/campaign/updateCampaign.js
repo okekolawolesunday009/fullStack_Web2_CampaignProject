@@ -54,7 +54,7 @@ const updateCampaign = async (req, res) => {
 
 
 
-       
+        // console.log(uodateC)
         res.status(200).json(updatedCampaign);
     } catch (error) {
       console.error(error);

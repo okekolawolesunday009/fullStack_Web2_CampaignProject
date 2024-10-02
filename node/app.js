@@ -6,16 +6,22 @@ const authRoute = require('./src/routes/authRoutes')//login etc
 const campaignRoute = require('./src/routes/campaignRoutes')//login etc
 const targetRoute = require('./src/routes/targetRoutes')//login etc
 const cron = require('node-cron')
+const cloudinary = require('cloudinary').v2
 const updateCampaignStatus = require('./src/controllers/deadlineController')
 const { checkCampaignNotifications } = require('./src/controllers/notificationController')
+// const fileUpload = require('express-fileupload')
 
 dotenv.config()
 
 const app = express()
 connectDB()
 
+
+
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+// app.use(fileUpload({useTempFiles: true}))
 
 const corsOption = {
     origin: 'http://localhost:3000',
@@ -41,7 +47,7 @@ cron.schedule('*/1 * * * *', () => {
 
 
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8000
 
 app.listen(PORT, () => {
     console.log("Listening on port ", PORT)

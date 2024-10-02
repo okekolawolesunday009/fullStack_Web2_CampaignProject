@@ -36,7 +36,7 @@ export class App extends Component{
   
     return (
     //
-    <div className="bg-[#13131a] relative sm:-8 p-4  min-h-screen flex flex-row">
+    <div className="bg-[#13131a] relative sm:p-8 p-4  min-h-screen flex flex-row">
       <div className='sm:flex hidden mr-10 relative'>
         {isLoggedIn  && <SideBar logout={logout}  /> }
         </div>

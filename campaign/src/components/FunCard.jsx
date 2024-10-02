@@ -35,7 +35,7 @@ function FunCard({ campaign }) {
         </div>
         <div className={css(styles.blockDetails)}>
           <div className={css(styles.detailItem)}>
-            <h3 className={css(styles.amount)}>${campaign.target ? campaign.target.toString(): "" }</h3>
+            <h3 className={css(styles.amount)}>${campaign.target}</h3>
             <p className={css(styles.label)}>Amount Received</p>
           </div>
           <div className={css(styles.detailItem)}>
