@@ -41,7 +41,7 @@ const getAll = async (req, res) => {
                     }
         })
 
-        console.log(deadlines, campaigns)
+        // console.log(deadlines, campaigns)
         res.status(200).json({campaigns});
         
     } catch (err) {
@@ -53,7 +53,7 @@ const getById = async (req, res) => {
     try {
         const campaign = await Campaign.findById(req.params.id)
         if (!campaign) {
-            res.status(404).json({message: "Product Not Found"})
+            res.status(404).json({message: "campaign Not Found"})
         }
         res.status(200).json({campaign})
     } catch (err) {

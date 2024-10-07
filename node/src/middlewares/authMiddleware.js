@@ -7,8 +7,7 @@ dotenv.config()
 const authMiddleware = async (req, res, next) => {
     try {
         const actualToken = req.header('Authorization').replace('Bearer ', '');
-        // console.log(actualToken, "auth")
-        // const actualToken = token.startsWith('Bearer ') ? token.slice(7) : token
+        
         if(!actualToken) {
             return res.status(401).json({
                 message: "Authorization token is missing"
@@ -24,7 +23,6 @@ const authMiddleware = async (req, res, next) => {
             
         }
         req.user = user
-        console.log(user, "auth2")
         next()
     } catch (err) {
         if (!res.headersSent) {

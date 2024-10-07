@@ -58,14 +58,24 @@ export const bondAddCampaignFailure = (error) => (dispatch) => dispatch(failureR
 export const fetchCampaignRequest = () => async (dispatch) => {
     try {
         const response = await axios.get(`${FURL}/api/campaign`)
-        dispatch(fetchCampaignSuccess(response.data.campaigns));
-        // console.log(dispatch(fetchCampaignSuccess(response.data.campaigns)))
-        // console.log(loginSuccess(response.data.user))
-        // toast.success('Succesfully fetched All Campaigns')
-        dispatch()
+        // dispatch(fetchCampaignSuccess(response.data.campaigns));
+    
+        // dispatch()
     } catch (error) {
         dispatch(failureResponse(error.response ? error.response.data : error.message));
-        // toast.error(error.response)
+
+    }
+};
+
+export const fetchCampaignByIdRequest = (id) => async (dispatch) => {
+    try {
+        const response = await axios.get(`${FURL}/api/campaign/${id}`)
+        dispatch(fetchCampaignSuccess(response.data.campaigns));
+
+        return response.data.campaigns
+    
+    } catch (error) {
+        dispatch(failureResponse(error.response ? error.response.data : error.message));
 
     }
 };
@@ -92,13 +102,14 @@ export const updateCampaignRequest = (name, description, category, target, deadl
 };
 
 
-export const deleteCampaignRequest = ({form}) => async (dispatch) => {
+export const deleteCampaignRequest = (id) => async (dispatch) => {
     try {
-        const response = await axios.delete(`${FURL}/api/campaign/:id`, { form })
+        console.log(id)
+        const response = await axios.delete(`${FURL}/api/campaign/${id}`)
         dispatch(deleteCampaignSuccess(response.data.campaign));
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
-        toast.success('Succesfully Added new Campaign')
+        toast.success('Succesfully Deleted Campaign')
         dispatch()
     } catch (error) {
         dispatch(failureResponse(error.response ? error.response.data : error.message));
@@ -115,7 +126,8 @@ export const addCampaignRequest = (name, description, category, target, deadline
         const token = localStorage.getItem('token');
         
         // Create a FormData object to append all the data (text and file)
-        const data = new FormData();
+        const data = new FormData();        // toast.error(error.response)
+
         data.append('name', name);
         data.append('description', description);
         data.append('category', category);

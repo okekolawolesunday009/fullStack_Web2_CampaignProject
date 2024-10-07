@@ -1,25 +1,49 @@
 import React, { useEffect, useState } from 'react'
-import DisplayCampaigns from '../components/DisplayCampaigns'
+import DisplayCampaigns from '../HOC/DisplayCampaigns'
 import campaigns from '../components/campaigns'
 import { css, StyleSheet } from 'aphrodite'
 import { connect } from 'react-redux'
-import { fetchCampaignRequest } from '../actions/campaign/campaignActionCreators'
+import { failureResponse, fetchCampaignByIdRequest, fetchCampaignRequest, fetchCampaignSuccess } from '../actions/campaign/campaignActionCreators'
+import axios from 'axios'
+import { FURL } from '../config.js/config'
 
 
-const Dashboard = ({campaigns, loading, error, fetchCampaignRequest}) => {
+const Dashboard = ({campaignui, loading, error, fetchCampaignRequest, userId, isLoggedIn, fetchCampaignByIdRequest}) => {
+const [campaignData, setCampaignData] = useState([])
 
 
-  useEffect(() => {
-    fetchCampaignRequest()
-  }, [fetchCampaignRequest])
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      let response;
+      if (isLoggedIn) {
+        response = await axios.get(`${FURL}/api/campaign/${userId}`);
+        console.log(response)
+      } else {
+        response = await axios.get(`${FURL}/api/campaign/`);
+      }
+      setCampaignData(response.data.campaigns);
+      fetchCampaignSuccess(response.data.campaigns); // Dispatch success to Redux
+    } catch (error) {
+      failureResponse(error.response ? error.response.data : error.message); // Dispatch failure to Redux
+    }
+  };
+
+  fetchData(); // Call the function
+}, [fetchCampaignByIdRequest, fetchCampaignRequest, userId, isLoggedIn]);
+
+
 
 
   return (
+
     <div className={`section ${css(styles.dashboard)}`} >
         <DisplayCampaigns
         title='All Campaign'
-        campaigns={campaigns}
-        
+        // campaignData = {campaignData}
+        campaignData = {campaigns}
+
         />
         
         
@@ -35,16 +59,27 @@ const styles = StyleSheet.create({
     }
   
   })
+
+  Dashboard.defaultProps = {
+   
+    isLoggedIn: false,
+    campaignData:[],
+    userId: ''
+    
+  };
   
 
   const mapStateToProps = (state) => ({
-    campaigns: state.campaigns.campaigns, // Ensure your reducer is correctly combined in rootReducer
+    // campaignui: state.campaigns, // Ensure your reducer is correctly combined in rootReducer
+    userId: state.ui.user._id,
+    isLoggedIn: state.ui.isUserLoggedIn,
     loading: state.campaigns.loading,
     error: state.campaigns.error
   })
 
   export const mapDispatchToProps = {
-    fetchCampaignRequest
+    fetchCampaignRequest,
+    fetchCampaignByIdRequest
 
 
   }

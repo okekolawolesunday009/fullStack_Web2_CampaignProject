@@ -1,12 +1,10 @@
 // import logo from './logo.svg';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Home, CreateCampaign, Campaign, Profile } from './pages';
-import { NavBar, SideBar } from './components';
+import { Home, CreateCampaign, Campaign, Profile, Login, Signup } from './pages';
+import { isTokenValid, NavBar, SideBar } from './components';
 import Dashboard from './pages/Dashboard';
 import { css, StyleSheet } from 'aphrodite';
-import Login from './pages/login/Login';
-import Signup  from './pages/signup/Signup';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {  SignupRequest, logout, loginRequest,  displayNotificationDrawer, hideNotificationDrawer } from './actions/ui/uiActionCreators';
@@ -23,16 +21,35 @@ export class App extends Component{
   constructor(props) {
     super(props);
     this.state = {
+      loggedIn: false
     
 
     };
+  
   }
+  componentDidMount() {
+    // Check token validity on component mount
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const isValid = isTokenValid(token); // Assume isTokenValid is a function that verifies the token
+      if (isValid) {
+        this.setState({ loggedIn: true });
+      
+      }
+    }
+  }
+
   render () {
+    const { loggedIn } = this.state;
 
   const {login, isLoggedIn, displayDrawer, logout, signup, fetchCampaign, displayNotificationDrawer, 
     hideNotificationDrawer,
     addCampaign
-  } = this.props
+  } = this.props;
+
+
+
   
     return (
     //
@@ -42,7 +59,7 @@ export class App extends Component{
         </div>
       
       <div className={`flex-1 max:sm:w-full max-w-[1380px] mx-auto sm:pr-5`}>
-      {isLoggedIn  && <NavBar 
+      {isLoggedIn && <NavBar 
       displayDrawer={displayDrawer}
       displayNotificationDrawer = {displayNotificationDrawer}
       hideNotificationDrawer = {hideNotificationDrawer}
@@ -52,9 +69,12 @@ export class App extends Component{
           <Route path='/' element={<Home/>}></Route>
           <Route path='/profile' element={isLoggedIn ? <Profile/> : <Navigate to="/login"/>}></Route>
           <Route path='/campaign/new' element={isLoggedIn ? <CreateCampaign addCampaign={addCampaign}/> : <Navigate to="/login"/>}></Route>
-          <Route path='/campaigns' element={<Campaign/>}></Route>
+          {/* <Route path='/campaign/:id' element={isLoggedIn ? <CreateCampaign addCampaign={addCampaign}/> : <Navigate to="/login"/>}></Route> */}
+          <Route path='/campaign/update/:id' element={ <CreateCampaign addCampaign={addCampaign}/>}></Route>
+
+          <Route path='/campaign/:id' element={<Campaign/>}></Route>
           <Route path='/login' element={!isLoggedIn ? <Login login={login} loginState={isLoggedIn} /> : <Navigate to="/dashboard" />} />
-         <Route path='/signup' element={!isLoggedIn ? <Signup signup={signup} /> : <Navigate to="/dashboard" />} />
+          <Route path='/signup' element={!isLoggedIn ? <Signup signup={signup} /> : <Navigate to="/dashboard" />} />
         <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
 
         <Route path='/dashboard' element={<Dashboard />} />

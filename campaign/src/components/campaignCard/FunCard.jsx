@@ -5,8 +5,13 @@ import { BiBorderRadius } from 'react-icons/bi';
 import './funcard.css';
 import { CiFolderOn } from 'react-icons/ci';
 import { FaRegUserCircle } from 'react-icons/fa';
-import { FURL } from '../config.js/config'
+import { FURL } from '../../config.js/config'
 import axios from 'axios';
+import { FiEdit3 } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import { connect } from 'react-redux';
+import { deleteCampaignRequest } from '../../actions/campaign/campaignActionCreators';
+import { useNavigate } from 'react-router-dom';
 
 const pulseAnimation = {
   '0%': { transform: 'translate(10%, 10%) scale(1)' },
@@ -14,14 +19,45 @@ const pulseAnimation = {
   '100%': { transform: 'translate(10%, 10%) scale(1)' },
 };
 
-function FunCard({ campaign }) {
-  console.log(campaign.target)
+const closed = () => {
+  return (
+    <div className=''>
+      <p className='text-red-500'>Closed</p>
+    </div>
+  )
+}
+
+function FunCard({ campaign, isLoggedIn, deleteCampaign}) {
+  // console.log(campaign.target, isLoggedIn)
+
+  const navigate = useNavigate()
+
+  const handleDelete = async (e) => {
+    const validateDelete = window.confirm('Do you want to delete camapign')
+    e.preventDefault()
+
+    if (validateDelete) {
+      console.log(campaign._id)
+      try {
+        await deleteCampaign(campaign._id);
+        console.log("Campaign deleted");
+        navigate('/dashboard');
+      } catch (error) {
+        console.error("Error deleting campaign:", error);
+      }
+    }
+  }
+
+  const handleDetail = (id) => {
+    navigate(`/campaign/${id}`)
+  }
+
    
  
   
   return (
     <div className={css(styles.cardContainer)} >
-      <div className={css(styles.imageContainer)}>
+      <div className={css(styles.imageContainer)} onClick={handleDetail(campaign._id)}>
         <img className={css(styles.image)} src={campaign.image} alt={campaign.name} />
       </div>
       <div className={css(styles.innerCard)}>
@@ -40,11 +76,15 @@ function FunCard({ campaign }) {
           </div>
           <div className={css(styles.detailItem)}>
             <h3 className={`${css(styles.amount)} ${css(styles.active)}`}>
-              {campaign.deadline > 0 ? campaign.deadline : "Closed"}
+              {campaign.deadline > 0 ? campaign.deadline : closed}
               <span className={`${css(campaign.deadline > 0 ? styles.activeIndicator: '')}`}></span>
             </h3>
             {campaign.deadline > 0 ? <p className={css(styles.label)}>Days left</p> : ""}
           </div>
+        </div>
+        <div className={`flex justify-between ${isLoggedIn === true ? 'block': 'hidden'}`}>
+          <FiEdit3 className='text-green-500'/> 
+          <MdDelete className='text-red-500' fill='red ' onClick={handleDelete}/>
         </div>
       </div>
       <div className={css(styles.footer)}>
@@ -163,5 +203,18 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
 });
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.ui.isUserLoggedIn,
+    displayDrawer: state.ui.isNotificationDrawerVisible,
+  };
+  
+};
 
-export default FunCard;
+export const mapDispatchToProps = {
+  deleteCampaign:deleteCampaignRequest,
+
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FunCard);

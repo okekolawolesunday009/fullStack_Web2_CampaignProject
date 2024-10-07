@@ -13,7 +13,9 @@ const campaigns = [
        icon: pics_01,
        name:'image-01',
        category: 'Education',
+       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam accumsan ligula at nisl aliquet rutrum. Donec mattis in tellus at mollis. Donec vestibulum ultrices turpis, a imperdiet tortor sagittis eu. Praesent venenatis libero eros, et ultrices diam feugiat a. Aliquam urna lacus, cursus eget risus scelerisque, pulvinar pellentesque erat. Donec imperdiet arcu sit amet maximus vulputate. Suspendisse potenti. Fusce accumsan ante id turpis feugiat, a",
        title: 'Understanding crypo',
+       target:0.11,
        amountCollected: '12.00Eth',
        deadline: '19',
        owner: '0x0123456677888899999999900'

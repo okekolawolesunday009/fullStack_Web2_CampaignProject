@@ -2,10 +2,10 @@ import { css, StyleSheet } from 'aphrodite'
 import React from 'react'
 import { BiFontSize } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
-import FunCard from './FunCard'
+import FunCard from '../components/campaignCard/FunCard'
 
 
-const DisplayCampaigns = ({title, isLoading, campaigns}) => {
+const DisplayCampaigns = ({title, isLoading, campaignData}) => {
 
   
 
@@ -17,20 +17,20 @@ const DisplayCampaigns = ({title, isLoading, campaigns}) => {
   return (
     <div className={css(styles.displayContainer)} >
       <h1 className={css(styles.headerTitle)}>
-        {title} {`(${campaigns.length})`}
+        {title} {`(${campaignData.length})`}
       </h1>
       <div className={css(styles.container)}>
         {isLoading && (
           <p>Loading.....</p>
         )}
 
-        {!isLoading && campaigns.length === 0 && (
+        {!isLoading && campaignData.length === 0 && (
           <p>You have not created any campaigns yet</p>
         )}
 
-          {!isLoading && campaigns.length > 0 && campaigns.map
-            ((campaigns) => <FunCard
-              campaign = {campaigns}
+          {!isLoading && campaignData.length > 0 && campaignData.map
+            ((campaign) => <FunCard
+              campaign = {campaign}
               handleClick ={handleNavigate}
               />)
           }

@@ -31,6 +31,8 @@ const fileUpload = async (req, res, next) => {
             folder: "imageUploads"
         });
 
+        
+
         req.imageUrl = result.secure_url;
         next()
 

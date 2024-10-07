@@ -9,7 +9,7 @@ async function updateCampaignStatus() {
         const currentDate = new Date();
 
         const deadlines = await Deadlines.find({activeState: true})
-        console.log(deadlines, "deadlines")
+        // console.log(deadlines, "deadlines")
 
         // const campaignIds = deadlines.map(deadlines => deadlines.campaignId);
 

@@ -1,12 +1,14 @@
 import { css, StyleSheet } from 'aphrodite';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormField from '../components/FormField';
 import CustomButton from '../components/CustomButton';
 import { bgStyles } from '../components/exports';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FURL } from '../config.js/config';
+import { fetchCampaignByIdRequest } from '../actions/campaign/campaignActionCreators';
+import campaigns from '../components/campaigns';
 
 const CreateCampaign = ({ addCampaign }) => {
   const [form, setForm] = useState({
@@ -19,6 +21,10 @@ const CreateCampaign = ({ addCampaign }) => {
   });
 
   const [imageFile, setImageFile] = useState(null)
+  const [campaigns, setCampaigns] = useState()
+
+  const {id} = useParams()
+
 
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0])
@@ -54,6 +60,17 @@ const CreateCampaign = ({ addCampaign }) => {
       toast.error('Error creating campaign');
     }
   };
+
+  useEffect(() => {
+    console.log(id)
+
+    if (id) {
+      const campaign = fetchCampaignByIdRequest(id);
+      console.log(campaign)
+      setCampaigns(campaign)
+      
+    }
+  },[id])
 
   return (
     <div className={css(styles.container)}>
