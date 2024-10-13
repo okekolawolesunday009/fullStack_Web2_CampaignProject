@@ -62,6 +62,26 @@ const getById = async (req, res) => {
     }
 }
 
+const getUserCampaignsByUserId = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        // console.log(userId);
+        
+        const campaigns = await Campaign.find({ user: userId }); // Assuming 'userId' is the field that relates campaigns to users
+        
+        if (campaigns.length === 0) {
+            return res.status(404).json({ message: "No campaigns found for this user" });
+        }
+        
+        res.status(200).json({ campaigns });
+    } catch (err) {
+        if (!res.headersSent) {
+            return res.status(500).json({ message: "Internal Server Error - getUserCampaignsByUserId" });
+        }
+    }
+};
+
+
 const addCampaign = async (req, res) => {
     try {
         // Authorization check first
@@ -70,40 +90,29 @@ const addCampaign = async (req, res) => {
         }
 
         const { name, description, category, target, deadline } = req.body;
-      
-        // Create new campaign
-        const newCampaign = new Campaign({
+
+          // Create new campaign
+          const newCampaign = new Campaign({
             name,
             description,
             category,
-            image: req.imageUrl,  // use Cloudinary URL
-            user: req.user._id
+            image: req.imageUrl || "https://example.com/default-profile-image.jpg" ,// use Cloudinary URL
+            // image,
+            user: req.user._id,
+            target:{
+                target,
+                targetDeposit : 0,
+                targetState: false
+            },
+            deadline: {
+                deadline,
+                activeState: checkDeadline(deadline)
+            }
         });
-
-        await newCampaign.save();
-
-        // Create Deadline and Target in parallel
-        const newDeadline = new Deadline({
-            campaignId: newCampaign._id,
-            deadlineDate: deadline,
-            activeState: checkDeadline(deadline)
-        });
-
-        const newTarget = new Target({
-            campaignId: newCampaign._id,
-            target,
-            targetDeposit: 0,
-            targetState: false
-        });
-
-        // Save deadline and target
-        await Promise.all([newDeadline.save(), newTarget.save()]);
-
-        // Add deadline reference to campaign
-        newCampaign.deadline.push(newDeadline._id);
         const savedCampaign = await newCampaign.save();
-
-        // Response
+      
+      
+        
         res.status(200).json({ savedCampaign });
     } catch (err) {
         console.error(err);
@@ -111,9 +120,11 @@ const addCampaign = async (req, res) => {
     }
 };
 
+// console.log(Campaign.schema.paths);
 
 module.exports = {
     getAll,
     getById,
-    addCampaign
+    addCampaign,
+    getUserCampaignsByUserId
 }

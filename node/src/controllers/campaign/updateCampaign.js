@@ -13,6 +13,13 @@ const updateCampaign = async (req, res) => {
         if ((req.user.role !== 'author')) {
             res.status(403).json({message: "UnAthorized to add Campaign"})
         }
+        const { name, description, category, target, deadline} = req.body;
+        
+        // Check if all required fields are provided
+        if (!name || !description || !category || !target || !deadline) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+        console.log(req.params.id)
         
         const campaign = await Campaign.findById(req.params.id);
 
@@ -20,7 +27,7 @@ const updateCampaign = async (req, res) => {
             return res.status(404).json({message: "Campaign not found"})
         }
 
-        const { name, description, category, target, deadline,image } = req.body
+       
 
 
         const updatedCampaign = await Campaign.findByIdAndUpdate(
@@ -28,28 +35,22 @@ const updateCampaign = async (req, res) => {
                 name, 
                 description, 
                 category, 
-                image,
-                user: req.user._id
+                // image,
+               image: req.imageUrl || "https://example.com/default-profile-image.jpg" ,// use Cloudinary URL
+                user: req.user._id,
+                target:{
+                    target,
+                    targetDeposit : 0,
+                    targetState: false
+                },
+                deadline: {
+                    deadline,
+                    activeState: checkDeadline(deadline)
+                }
             },
-            {new: true}
         )
 
-        const newDeadline = await Deadline.findOne({campaignId: campaign._id})
-        if (!newDeadline) {
-            newDeadline = new Deadline({ campaignId: campaign._id });
-        }
-        newDeadline.deadlineDate = deadline;
-        newDeadline.activeState = checkDeadline(deadline)
-
-        const newTarget = await Target.findOne({campaignId: campaign._id})
-        if (!newTarget) {
-            newTarget = new Target({ campaignId: campaign._id });
-        }
-        newTarget.target = target;
-        newTarget.targetState = checkTarget(target)
-
-        await newTarget.save()
-        await newDeadline.save()
+        
         await updatedCampaign.save()
 
 

@@ -1,27 +1,11 @@
 const mongoose = require('mongoose')
 
 
-const targetSchema = new mongoose.Schema({
-    campaignId : { 
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Campaign',
-        required: true
-    },
-    target: {
-        type: Number,
-        required: true
-    },
-    targetDeposit:{
-        type: Number,
-        required: true
-    },
-    targetState: {
-        type: Boolean,
-        required: true
-    }
-
-})
+const TargetSchema = new mongoose.Schema({
+    target: { type: Number, required: true },
+    targetDeposit: { type: Number, default: 0 },
+    targetState: { type: Boolean, default: false },
+});
 
 
-const Target = mongoose.model('Target', targetSchema)
-module.exports = Target
+module.exports = TargetSchema

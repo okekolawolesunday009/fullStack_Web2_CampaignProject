@@ -1,4 +1,6 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const DeadlineSchema = require('./deadlineModel');
+const TargetSchema = require('./targetModel');
 
 const campaignSchema = new mongoose.Schema({
     name: {
@@ -20,16 +22,9 @@ const campaignSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    targetDeposit: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Target'
-    },
-    deadline: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Deadline'
-        }
-    ],
+    deadline:   DeadlineSchema,
+    target: TargetSchema,
+
     image: {
         type: String,
         required: true
