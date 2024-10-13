@@ -9,8 +9,13 @@ import { toast } from 'react-toastify';
 import { FURL } from '../config.js/config';
 import { fetchCampaignByIdRequest } from '../actions/campaign/campaignActionCreators';
 import campaigns from '../components/campaigns';
+import { connect } from 'react-redux';
+import { format } from 'date-fns';
+import { formatForDatetimeLocal } from '../components';
 
-const CreateCampaign = ({ addCampaign }) => {
+// In your useEffect:
+
+const CreateCampaign = ({campaignState, addCampaign, updateCampaign }) => {
   const [form, setForm] = useState({
     name: "",
     category: '',
@@ -21,8 +26,8 @@ const CreateCampaign = ({ addCampaign }) => {
   });
 
   const [imageFile, setImageFile] = useState(null)
-  const [campaigns, setCampaigns] = useState()
-
+  const [campaigns, setCampaigns] = useState();
+  const [loading, setLoading] = useState(false); // Add loading state
   const {id} = useParams()
 
 
@@ -45,31 +50,78 @@ const CreateCampaign = ({ addCampaign }) => {
 
   const submit = async (e) => {
     e.preventDefault();
+    setLoading(true)
+
+    if (!imageFile) {
+      toast.error('Please upload an image'); // Upload the file
+      setLoading(false)
+      return
+    } 
     
-    // Check if the image is selected
-   
+  
     try {
-      
-      if (!imageFile) {
-        toast.error('Please upload an image'); // Upload the file
-      } 
-      addCampaign(name, category, description, target, deadline, imageFile);
-      navigate('/dashboard');
+      if (id) {
+        // Update existing campaign
+        const update = await updateCampaign(name, category, description, target, deadline, imageFile, id);
+        if (update) return navigate('/dashboard');
+
+        toast.success('Campaign updated successfully');
+      } else {
+        // Create new campaign
+        const add = await addCampaign(name, category, description, target, deadline, imageFile);
+        if (add) return navigate('/dashboard');
+
+        toast.success('Campaign created successfully');
+      }
     } catch (error) {
-      console.error('Error creating campaign:', error);
-      toast.error('Error creating campaign');
+      console.error('Error during campaign operation:', error);
+      toast.error(`Error ${id ? 'updating' : 'creating'} campaign`);
+    } finally {
+      setLoading(false);
     }
+  
   };
 
   useEffect(() => {
     console.log(id)
 
-    if (id) {
-      const campaign = fetchCampaignByIdRequest(id);
-      console.log(campaign)
-      setCampaigns(campaign)
-      
-    }
+    const fetchCampaign = async () => {
+      if (id) {
+        try {
+          // const response = await fetchCampaignByIdRequest(id);
+          const response = await axios.get(`${FURL}/api/campaign/${id}`)
+          const campaign = response.data.campaign
+          const formattedDate = formatForDatetimeLocal(campaign.createdAt);
+
+          setForm({
+            name: campaign.name,
+            category: campaign.category,
+            description: campaign.description,
+            target: campaign.target.target,
+            deadline: formattedDate,
+            image: campaign.image
+
+          })
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setForm({
+          name: "",
+          category: '',
+          description: '',
+          target: '',
+          deadline: '',
+          image: ''
+
+
+        })
+      }
+    };
+
+    fetchCampaign()
+
+    
   },[id])
 
   return (
@@ -140,11 +192,14 @@ const CreateCampaign = ({ addCampaign }) => {
               id='image'
             />
             <div className={`submit ${css(styles.submitContainer)}`}>
-              <CustomButton
-                btnType='submit'
-                title='Submit new campaign'
-                styles={css(bgDefault.bgColor)}
-              />
+            <CustomButton
+              btnType='submit'
+              title={id ? 
+                (loading === true ? <div className="loader">Loading...</div> : 'Update Campaign') 
+                : 'Submit new campaign'}
+              styles={css(bgDefault.bgColor)}
+              disabled={loading}
+            />
             </div>
           </div>
         </form>
@@ -211,5 +266,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+const mapStateToProps = (state) => ({
+  campaignState: state.campaigns.isCampaignAdded, // Ensure your reducer is correctly combined in rootReducer
+  // userId: state.ui.user._id,
+  
+})
 
-export default CreateCampaign;
+export const mapDispatchToProps = {
+ 
+  fetchCampaignByIdRequest
+
+}
+
+// Connecting the action to the component
+export default connect(mapStateToProps, mapDispatchToProps)(CreateCampaign)
+

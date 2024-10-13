@@ -1,0 +1,92 @@
+[
+    {
+        "name":"Save the Rainforest",
+        "description":"An environmental campaign aimed at preserving the Amazon rainforest.",
+        "category":"Environmental",
+        "target":10000,
+        "deadline":"2025-06-01T12:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v987654321\/save-rainforest.jpg",
+        "user._id":"65abdf23989cd0987654321"
+    },
+    {
+        "name":"Tech for Education",
+        "description":"Fundraising to provide tech resources for underprivileged schools.",
+        "category":"Education",
+        "target":15000,
+        "deadline":"2024-09-15T18:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v123456789\/tech-for-education.jpg",
+        "user._id":"72dbaf23988cd8765432109"
+    },
+    {
+        "name":"Local Art Showcase",
+        "description":"A campaign to promote local artists and host an art exhibition.",
+        "category":"Art & Culture",
+        "target":7500,
+        "deadline":"2024-11-10T16:30:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v1122334455\/local-art-showcase.jpg",
+        "user._id":"60caed78901bc2345678901"
+    },
+    {
+        "name":"Community Park Renovation",
+        "description":"Raising funds to renovate the community park and install new playgrounds.",
+        "category":"Community",
+        "target":20000,
+        "deadline":"2024-08-20T10:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v2233445566\/community-park-renovation.jpg",
+        "user._id":"53cafebd123ab0987654321"
+    },
+    {
+        "name":"Clean Water for All",
+        "description":"A campaign to provide clean drinking water to rural areas.",
+        "category":"Humanitarian",
+        "target":25000,
+        "deadline":"2024-10-15T17:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v6677889900\/clean-water.jpg",
+        "user._id":"65ecab23989cd0987654322"
+    },
+    {
+        "name":"Wildlife Protection Fund",
+        "description":"Raising funds to protect endangered wildlife species.",
+        "category":"Environmental",
+        "target":18000,
+        "deadline":"2024-12-05T09:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v1234569999\/wildlife-protection.jpg",
+        "user._id":"73cadf23988cd8765432108"
+    },
+    {
+        "name":"School Supplies Drive",
+        "description":"Gathering donations to provide school supplies for children in need.",
+        "category":"Education",
+        "target":8000,
+        "deadline":"2025-01-25T13:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v4455667788\/school-supplies.jpg",
+        "user._id":"68dafb23989bc2345678902"
+    },
+    {
+        "name":"Community Health Awareness",
+        "description":"An initiative to promote health education and awareness in underprivileged areas.",
+        "category":"Health",
+        "target":12000,
+        "deadline":"2024-07-15T10:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v2233445567\/community-health.jpg",
+        "user._id":"62bfebd78901bc2345678903"
+    },
+    {
+        "name":"Green Energy Solutions",
+        "description":"Promoting the adoption of green energy technologies in urban areas.",
+        "category":"Technology",
+        "target":22000,
+        "deadline":"2024-11-25T11:00:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v9988776655\/green-energy.jpg",
+        "user._id":"55cafebd123ab0987654323"
+    },
+    {
+        "name":"Hunger Relief Initiative",
+        "description":"A campaign to fight hunger by distributing food to needy families.",
+        "category":"Humanitarian",
+        "target":30000,
+        "deadline":"2024-06-30T14:30:00",
+        "imageUrl":"https:\/\/res.cloudinary.com\/demo\/image\/upload\/v3344556677\/hunger-relief.jpg",
+        "user._id":"61cadeb123ab0987654322"
+    }
+]

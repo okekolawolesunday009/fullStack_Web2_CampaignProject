@@ -7,7 +7,7 @@ const Home = () => {
   const navigate = useNavigate()
 
   const handleNavLink = (link) => {
-    navigate(`/${link}`)
+    // navigate(`/${link}`)
 
 
   }

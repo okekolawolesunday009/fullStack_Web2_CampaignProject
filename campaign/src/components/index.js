@@ -22,3 +22,27 @@ export const isTokenValid = (token) => {
     return percentage
   }
 
+  export const formatForDatetimeLocal = (isoDate) => {
+    // Create a new Date object
+    const date = new Date(isoDate);
+    
+    // Get the individual components
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    // Return in the format YYYY-MM-DDTHH:MM
+    return `${month}/${day}/${year}T${hours}:${minutes}`;
+};
+
+export const truncate = (desc, maxlength = 100) => {
+  if (desc.length > maxlength) {
+    const newText = desc.splice(0, maxlength) + '...'
+    return newText
+
+  } else {
+    return desc
+  }
+}

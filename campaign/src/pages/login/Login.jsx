@@ -12,8 +12,10 @@ const Login = ({ login, loginState }) => {
     password: ''
   });
 
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Add loading state
+  const [visited, setVisited] = useState(false); // Add visited state
 
+  const navigate = useNavigate();
   const { email, password } = formData;
 
   const handleChange = (e) => {
@@ -23,24 +25,30 @@ const Login = ({ login, loginState }) => {
     }));
   };
 
-  useEffect(() => {
-    if (loginState === true) {
-      console.log('User is logged in:', loginState);
-      navigate('/dashboard');
-    }
-  });
+  // useEffect(() => {
+  //   if (loginState === true) {
+  //     console.log('User is logged in:', loginState);
+  //     navigate('/dashboard');
+  //   }
+  // }, [loginState, navigate]);
 
   const submit = async (e) => {
     e.preventDefault();
+    setVisited(true);  // Set the button as visited
+    setLoading(true);  // Set the button to loading state
+    
     try {
       await login(email, password);
       if (loginState === true) {
         console.log('User is logged in:', loginState);
         navigate('/dashboard');
+      } else {
+        throw new Error('Login state is false');
       }
     } catch (error) {
       console.error('Login failed:', error);
       toast.error('Error Signing in');
+      setLoading(false);  // Stop loading when login fails
     }
   };
 
@@ -77,9 +85,11 @@ const Login = ({ login, loginState }) => {
             </div>
             <CustomButton
               btnType="submit"
-              title={'Login'}
-              styles={`bg-[#1dc071] text-white py-2 mt-4`
-              }
+              title={loading ? (
+                <div className="loader">loading</div> // Loading icon
+              ) : 'Login'}
+              styles={`bg-[#1dc071] text-white py-2 mt-4 ${visited ? 'visited' : ''}`} // Add visited class
+              disabled={loading} // Disable button while loading
             />
           </div>
         </form>

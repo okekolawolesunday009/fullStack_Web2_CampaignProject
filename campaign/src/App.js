@@ -11,7 +11,7 @@ import {  SignupRequest, logout, loginRequest,  displayNotificationDrawer, hideN
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addCampaignRequest, fetchCampaignRequest } from './actions/campaign/campaignActionCreators';
+import { addCampaignRequest, fetchCampaignRequest, updateCampaignRequest } from './actions/campaign/campaignActionCreators';
 
 
 
@@ -43,8 +43,11 @@ export class App extends Component{
   render () {
     const { loggedIn } = this.state;
 
-  const {login, isLoggedIn, displayDrawer, logout, signup, fetchCampaign, displayNotificationDrawer, 
+  const {login, isLoggedIn, displayDrawer,
+    logout, signup, fetchCampaign, 
+    displayNotificationDrawer, 
     hideNotificationDrawer,
+    updateCampaign,
     addCampaign
   } = this.props;
 
@@ -70,28 +73,27 @@ export class App extends Component{
           <Route path='/profile' element={isLoggedIn ? <Profile/> : <Navigate to="/login"/>}></Route>
           <Route path='/campaign/new' element={isLoggedIn ? <CreateCampaign addCampaign={addCampaign}/> : <Navigate to="/login"/>}></Route>
           {/* <Route path='/campaign/:id' element={isLoggedIn ? <CreateCampaign addCampaign={addCampaign}/> : <Navigate to="/login"/>}></Route> */}
-          <Route path='/campaign/update/:id' element={ <CreateCampaign addCampaign={addCampaign}/>}></Route>
-
+          <Route path='/campaign/update/:id' element={isLoggedIn ? <CreateCampaign addCampaign={addCampaign} updateCampaign={updateCampaign}/> : <Navigate to="/login"/>}></Route>
           <Route path='/campaign/:id' element={<Campaign/>}></Route>
           <Route path='/login' element={!isLoggedIn ? <Login login={login} loginState={isLoggedIn} /> : <Navigate to="/dashboard" />} />
           <Route path='/signup' element={!isLoggedIn ? <Signup signup={signup} /> : <Navigate to="/dashboard" />} />
         <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
 
-        <Route path='/dashboard' element={<Dashboard />} />
+        {/* <Route path='/dashboard' element={<Dashboard />} />
 
-                {/* <Route path='/' element={<Home/>}></Route> */}
+                <Route path='/' element={<Home/>}></Route> */}
 
         </Routes>
 
       </div>
       <ToastContainer
-          position="bottom-center"
+          position="top-center"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
           rtl={false}
-          pauseOnFocusLoss
+          // pauseOnFocusLoss
           draggable
           pauseOnHover
           theme="dark"
@@ -131,6 +133,7 @@ login:loginRequest,
 signup:SignupRequest,
 logout: logout,
 addCampaign: addCampaignRequest,
+updateCampaign: updateCampaignRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

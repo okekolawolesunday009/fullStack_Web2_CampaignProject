@@ -85,14 +85,56 @@ export const bondFetchCampaign = (campaign) => (dispatch) => dispatch(fetchCampa
 
 
 
-export const updateCampaignRequest = (name, description, category, target, deadline,image) => async (dispatch) => {
+// export const updateCampaignRequest = (name, description, category, target, deadline,image) => async (dispatch) => {
+//     try {
+//         const response = await axios.put(`${FURL}/api/campaign/update/:id`, 
+//             { name, description, category, target, deadline,image })
+//         dispatch(updateCampaignSuccess(response.data.campaign));
+//         console.log(dispatch(loginSuccess(response.data.user)))
+//         // console.log(loginSuccess(response.data.user))
+//         toast.success('Succesfully Added new Campaign')
+//         dispatch()
+//     } catch (error) {
+//         dispatch(failureResponse(error.response ? error.response.data : error.message));
+//         toast.error(error.response)
+
+//     }
+// };
+
+export const updateCampaignRequest = (name, description, category, target, deadline,imageFile, id) => async (dispatch) => {
     try {
-        const response = await axios.put(`${FURL}/api/campaign/update/:id`, 
-            { name, description, category, target, deadline,image })
+
+          // Get the token from localStorage
+          const token = localStorage.getItem('token');
+        
+          // Create a FormData object to append all the data (text and file)
+          const data = new FormData();        // toast.error(error.response)
+  
+          data.append('name', name);
+          data.append('description', description);
+          data.append('category', category);
+          data.append('target', target);
+          data.append('deadline', deadline);
+        //   data.append('photo', imageFile)
+          data.append('image', imageFile.path); // Append the image file
+  
+          // Make the POST request to the backend
+        const response = await axios.put(`${FURL}/api/campaign/update/${id}`, {
+              headers: {
+                  'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                  'Content-Type': 'multipart/form-data', // Ensure the request is handled as form data
+              },
+          });
+
+          console.log(data)
+  
+      
+          
+       
         dispatch(updateCampaignSuccess(response.data.campaign));
-        console.log(dispatch(loginSuccess(response.data.user)))
+        console.log(dispatch(updateCampaignSuccess(response.data.campaign)))
         // console.log(loginSuccess(response.data.user))
-        toast.success('Succesfully Added new Campaign')
+        toast.success('Succesfully Updated Campaign')
         dispatch()
     } catch (error) {
         dispatch(failureResponse(error.response ? error.response.data : error.message));
@@ -101,12 +143,17 @@ export const updateCampaignRequest = (name, description, category, target, deadl
     }
 };
 
-
 export const deleteCampaignRequest = (id) => async (dispatch) => {
     try {
         console.log(id)
-        const response = await axios.delete(`${FURL}/api/campaign/${id}`)
-        dispatch(deleteCampaignSuccess(response.data.campaign));
+
+        const token = localStorage.getItem('token');
+        const response = await axios.delete(`${FURL}/api/campaign/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+            },
+        });
+        dispatch(deleteCampaignSuccess(response.data.campaigns));
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
         toast.success('Succesfully Deleted Campaign')
@@ -145,10 +192,9 @@ export const addCampaignRequest = (name, description, category, target, deadline
         });
 
         // Dispatch success action with the campaign data from the response
-        dispatch(addCampaignSuccess(response.data.campaign));
+        dispatch(addCampaignSuccess(response.data.campaigns));
         
         // Optionally log the user or campaign for debugging
-        console.log(dispatch(loginSuccess(response.data.user)));
         
         // Show a success toast message
         toast.success('Successfully added new Campaign');

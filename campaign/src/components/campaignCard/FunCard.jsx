@@ -11,7 +11,8 @@ import { FiEdit3 } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { connect } from 'react-redux';
 import { deleteCampaignRequest } from '../../actions/campaign/campaignActionCreators';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { truncate } from '..';
 
 const pulseAnimation = {
   '0%': { transform: 'translate(10%, 10%) scale(1)' },
@@ -37,29 +38,44 @@ function FunCard({ campaign, isLoggedIn, deleteCampaign}) {
     e.preventDefault()
 
     if (validateDelete) {
-      console.log(campaign._id)
+      console.log(campaign._id, campaign.target.target)
       try {
-        await deleteCampaign(campaign._id);
-        console.log("Campaign deleted");
-        navigate('/dashboard');
+        // await deleteCampaign(campaign._id);
+        if (await deleteCampaign(campaign._id)) return navigate('/dashboard');
+        // console.log("Campaign deleted");
       } catch (error) {
         console.error("Error deleting campaign:", error);
       }
     }
   }
+  const [daysRemaining, setDaysRemaining] = useState(null);
+  const [truncateText, setTruncateText] = useState("")
 
-  const handleDetail = (id) => {
-    navigate(`/campaign/${id}`)
-  }
+  useEffect(() => {
+      if (campaign && campaign.deadline && campaign.deadline.deadline) {
+          const days = Math.ceil((new Date(campaign.deadline.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+          setDaysRemaining(days);
+          console.log(daysRemaining, campaign.deadline.deadline);
+      }
+
+      // setTruncateText(truncate(campaign.description, 10))
+      // console.log(setTruncateText(truncate(campaign.description, 40)))
+
+
+      
+  }, [campaign]); // Runs whenever campaign changes
 
    
  
   
   return (
     <div className={css(styles.cardContainer)} >
-      <div className={css(styles.imageContainer)} onClick={handleDetail(campaign._id)}>
+      <Link to={`/campaign/update/${campaign._id}`}>
+      <div className={css(styles.imageContainer)} >
         <img className={css(styles.image)} src={campaign.image} alt={campaign.name} />
       </div>
+      </Link>
+     
       <div className={css(styles.innerCard)}>
         <div className={css(styles.imgCategory)}>
           <CiFolderOn size={20} />
@@ -71,20 +87,25 @@ function FunCard({ campaign, isLoggedIn, deleteCampaign}) {
         </div>
         <div className={css(styles.blockDetails)}>
           <div className={css(styles.detailItem)}>
-            <h3 className={css(styles.amount)}>${campaign.target}</h3>
+            <h3 className={css(styles.amount)}>${campaign.target.target}</h3>
             <p className={css(styles.label)}>Amount Received</p>
           </div>
           <div className={css(styles.detailItem)}>
             <h3 className={`${css(styles.amount)} ${css(styles.active)}`}>
-              {campaign.deadline > 0 ? campaign.deadline : closed}
-              <span className={`${css(campaign.deadline > 0 ? styles.activeIndicator: '')}`}></span>
+              {daysRemaining  > 0 ? daysRemaining : closed}
+              <span className={`${css(daysRemaining > 0 ? styles.activeIndicator: '')}`}></span>
             </h3>
-            {campaign.deadline > 0 ? <p className={css(styles.label)}>Days left</p> : ""}
+            {daysRemaining > 0 ? <p className={css(styles.label)}>Days left</p> : ""}
           </div>
         </div>
         <div className={`flex justify-between ${isLoggedIn === true ? 'block': 'hidden'}`}>
-          <FiEdit3 className='text-green-500'/> 
-          <MdDelete className='text-red-500' fill='red ' onClick={handleDelete}/>
+
+         <Link to={`/campaign/update/${campaign._id}`}>
+             <FiEdit3 className='text-green-500'/> 
+          
+          </Link>
+          
+          <MdDelete className='text-red-500' fill='red ' onClick={handleDelete}/>          
         </div>
       </div>
       <div className={css(styles.footer)}>

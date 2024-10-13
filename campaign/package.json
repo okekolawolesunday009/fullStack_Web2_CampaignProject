@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "aphrodite": "^2.4.0",
     "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
     "immutable": "^4.3.7",
     "jwt-decode": "^4.0.0",
     "normalizr": "^3.6.2",
