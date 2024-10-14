@@ -2,6 +2,7 @@
 // // CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@dwblhxqyz
 const cloudinary = require("cloudinary").v2;
 const dotenv = require('dotenv')
+const fs = require('fs')
 dotenv.config()
 
 
@@ -40,7 +41,14 @@ const fileUpload = async (req, res, next) => {
             return res.status(500).json({ message: "Image not uploaded" });
         }
 
-        console.log(result)
+        fs.inlink(image.path, (err) => {
+            if (err) {
+                console.error("Failed to delete local image:", err)
+            } else {
+                console.log("Local iage file deleted successfully")
+            }
+        })
+
 
     
     } catch (err) {

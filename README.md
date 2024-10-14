@@ -86,24 +86,24 @@ https://example.com/api
 * Description: Deletes a user's account.
 
 #Product Endpoints
-## Get All Products
-* Endpoint: GET /products
+## Get All Campaign
+* Endpoint: GET /campaign
 * Description: Retrieves a list of all products.
 
-## Get Product by ID
-* Endpoint: GET /products/:id
+## Get Campaign by ID
+* Endpoint: GET /api/campaign/:id
 * Description: Retrieves a specific product by its ID.
 
-## Add Product
-* Endpoint: POST /products
+## Add Campaign
+* Endpoint: POST /api/campaign/new
 * Description: Adds a new product to the database (seller only).
 
 ## Update Product
-* Endpoint: PUT /products/:id
+* Endpoint: PUT /api/campaign/update/:id
 * Description: Updates a product's information (seller only).
 
 ## Delete Product
-* Endpoint: DELETE /products/:id
+* Endpoint: DELETE /api/campaign/:id
 * Description: Deletes a product from the database (seller only).
 
 # Error Responses
@@ -212,17 +212,17 @@ Start the server
 **Delete User(DELETE) - /api/users/:id**
 
 # Campaign
-**All Campaigns(GET) - /api/campaigns/**
+**All Campaigns(GET) - /api/campaign/**
 
-**CampaignById(GET) - /api/campaigns/:id**
+**CampaignById(GET) - /api/campaign/:id**
 
-**CampaignsByAuthor(GET) - /api/campaigns/:id/campaign**
+**CampaignsByAuthor(GET) - /api/campaign/user/:id/**
 
-**New Campaign(POST)(Authors only) - /api/campaigns/new**
+**New Campaign(POST)(Authors only) - /api/campaign/new**
 
-**Update Campaign(PUT)(Campaigns only) - /api/campaigns/:id**
+**Update Campaign(PUT)(Campaigns only) - /api/campaign/:id**
 
-**Delete Campaign(DELETE)(Campaigns only) - /api/campaigns/:id**
+**Delete Campaign(DELETE)(Campaigns only) - /api/campaign/:id**
 
 ## Appendix
 To be integrated into Simplicy Frontend

@@ -17,6 +17,5 @@ const URL = (server) => {
   }
 
   export const FURL = URL('DEV');
-  console.log("url:", FURL)
 
   

@@ -1,55 +1,55 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const cors = require('cors')
-const connectDB = require('./src/config.js/db')
-const authRoute = require('./src/routes/authRoutes')//login etc
-const campaignRoute = require('./src/routes/campaignRoutes')//login etc
-const targetRoute = require('./src/routes/targetRoutes')//login etc
-const cron = require('node-cron')
-const cloudinary = require('cloudinary').v2
-const updateCampaignStatus = require('./src/controllers/deadlineController')
-const { checkCampaignNotifications } = require('./src/controllers/notificationController')
-// const fileUpload = require('express-fileupload')
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const cron = require('node-cron');
+const http = require('http');
 
-dotenv.config()
+const connectDB = require('./src/config.js/db');
+const authRoute = require('./src/routes/authRoutes'); // login etc
+const campaignRoute = require('./src/routes/campaignRoutes'); // login etc
+const targetRoute = require('./src/routes/targetRoutes'); // login etc
+const updateCampaignStatus = require('./src/controllers/deadlineController');
+const { checkCampaignNotifications } = require('./src/controllers/notificationController');
 
-const app = express()
-connectDB()
+dotenv.config();
 
+const app = express();
+const server = http.createServer(app);  // Use the server for Socket.IO
+const { Server } = require('socket.io');
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:3000',
+    }
+});
 
+connectDB();
 
-
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
-// app.use(fileUpload({useTempFiles: true}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const corsOption = {
     origin: 'http://localhost:3000',
-    // origin: 'https://full-stack-web2-campaign-project.vercel.app' || 'http://localhost:3000',
     credentials: true,
     optionSucessStatus: 200
-}
-app.use(cors(corsOption))
-
-// app.get("/", async (req, res) => {
-//     console.log("home works well")
-// })
+};
+app.use(cors(corsOption));
 
 app.use('/api/auth', authRoute);
 app.use('/api/campaign', campaignRoute);
 app.use('/api/target', targetRoute);
 
+// Cron job running every minute
 cron.schedule('*/1 * * * *', () => {
-    updateCampaignStatus()//also deadline
-   // checkCampaignNotifications()//check and send mail(finding out our to pass user email to it)
-    console.log("Running every 1 to 5 minutes")
-})
+    updateCampaignStatus(); // Also handle deadline
+    // checkCampaignNotifications(); // Uncomment this once you handle email notifications properly
+    console.log("Cron job running every 1 minute");
+});
 
+const PORT = process.env.PORT || 8000;
 
+// Use server.listen instead of app.listen
+server.listen(PORT, () => {
+    console.log("Server is running on port", PORT);
+});
 
-const PORT = process.env.PORT || 8000
-
-app.listen(PORT, () => {
-    console.log("Listening on port ", PORT)
-
-})
+module.exports = { io };

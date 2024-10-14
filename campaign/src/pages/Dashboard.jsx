@@ -3,13 +3,17 @@ import DisplayCampaigns from '../HOC/DisplayCampaigns'
 // import campaigns from '../components/campaigns'
 import { css, StyleSheet } from 'aphrodite'
 import { connect } from 'react-redux'
-import { failureResponse, fetchCampaignByIdRequest, fetchCampaignRequest, fetchCampaignSuccess } from '../actions/campaign/campaignActionCreators'
+import { failureResponse, fetchCampaignRequest,  fetchCampaignSuccess } from '../actions/campaign/campaignActionCreators'
 import axios from 'axios'
 import { FURL } from '../config.js/config'
 import { jwtDecode } from 'jwt-decode'
 
 
-const Dashboard = ({campaignui, loading, error, fetchCampaignRequest, isLoggedIn, fetchCampaignByIdRequest}) => {
+const Dashboard = ({
+  campaigns, loading, error, 
+  fetchCampaign,
+  isLoggedIn
+}) => {
 const [campaignData, setCampaignData] = useState([])
 
 
@@ -21,22 +25,24 @@ useEffect(() => {
     const token = localStorage.getItem('token');
 
     const userId = jwtDecode(token).userId
-    try {
+    try {        // dispatch()
+
 
       let response
-      console.log(userId.userId)
+      // console.log(userId.userId)
 
        if (isLoggedIn && userId) {
         response = await axios.get(`${FURL}/api/campaign/user/${userId}`);
-        console.log(response)
-       } else {
-
         
+       
+       } else {
           response = await axios.get(`${FURL}/api/campaign/`);
+        
        }
+       fetchCampaignSuccess(response.data.campaigns); 
       
-      setCampaignData(response.data.campaigns);
-      fetchCampaignSuccess(response.data.campaigns); // Dispatch success to Redux
+      setCampaignData(campaigns);
+      fetchCampaign(response.data.campaigns)
     } catch (error) {
       failureResponse(error.response ? error.response.data : error.message); // Dispatch failure to Redux
     }
@@ -82,7 +88,7 @@ const styles = StyleSheet.create({
   
 
   const mapStateToProps = (state) => ({
-    // campaignui: state.campaigns, // Ensure your reducer is correctly combined in rootReducer
+    campaigns: state.campaigns.campaigns, // Ensure your reducer is correctly combined in rootReducer
     // userId: state.ui.user._id,
     isLoggedIn: state.ui.isUserLoggedIn,
     loading: state.campaigns.loading,
@@ -90,8 +96,7 @@ const styles = StyleSheet.create({
   })
 
   export const mapDispatchToProps = {
-    fetchCampaignRequest,
-    fetchCampaignByIdRequest
+    fetchCampaign:fetchCampaignRequest,
 
 
   }

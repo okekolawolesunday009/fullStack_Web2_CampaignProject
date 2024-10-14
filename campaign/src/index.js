@@ -8,30 +8,42 @@ import {Provider} from 'react-redux'
 import { applyMiddleware } from 'redux';
 import {Map} from 'immutable'
 import {configureStore} from '@reduxjs/toolkit'
-import rootReducer from './reducers/rootReducers';
+// import rootReducer from './reducers/rootReducers';
 import { initialState } from './reducers/uiReducers';
 import { thunk } from 'redux-thunk';
+import {PersistGate} from 'redux-persist/integration/react'
+import persistedReducer from './reducers/rootReducers';
+import persistStore from 'redux-persist/es/persistStore';
+import { initialStateCampaign } from './reducers/campaignReducers';
+import { initialNotificationState } from './reducers/notificationReducers';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const preloadedState = {
-  ui: Map(initialState)
+  ui: initialState,
+  campaigns: initialStateCampaign,
+  notifications: initialNotificationState
 }
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk),
   preloadedState
 
 })
+
+const persistor = persistStore(store)
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
 
-        <App />
-      </Router>
+          <App />
+        </Router>
+        </PersistGate>
     </Provider>
   </React.StrictMode>
 );

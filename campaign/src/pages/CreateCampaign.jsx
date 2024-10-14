@@ -28,6 +28,8 @@ const CreateCampaign = ({campaignState, addCampaign, updateCampaign }) => {
   const [imageFile, setImageFile] = useState(null)
   const [campaigns, setCampaigns] = useState();
   const [loading, setLoading] = useState(false); // Add loading state
+  const [visited, setVisited] = useState(false); // Add loading state
+
   const {id} = useParams()
 
 
@@ -51,6 +53,7 @@ const CreateCampaign = ({campaignState, addCampaign, updateCampaign }) => {
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true)
+    setVisited(true)
 
     if (!imageFile) {
       toast.error('Please upload an image'); // Upload the file
@@ -196,8 +199,8 @@ const CreateCampaign = ({campaignState, addCampaign, updateCampaign }) => {
               btnType='submit'
               title={id ? 
                 (loading === true ? <div className="loader">Loading...</div> : 'Update Campaign') 
-                : 'Submit new campaign'}
-              styles={css(bgDefault.bgColor)}
+                : 'Create campaign'}
+              styles={`${css(bgDefault.bgColor)} ${visited ? 'bg-green-500' : ''}`}
               disabled={loading}
             />
             </div>
@@ -274,7 +277,6 @@ const mapStateToProps = (state) => ({
 
 export const mapDispatchToProps = {
  
-  fetchCampaignByIdRequest
 
 }
 

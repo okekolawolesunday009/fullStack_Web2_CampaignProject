@@ -88,7 +88,7 @@ const Login = ({ login, loginState }) => {
               title={loading ? (
                 <div className="loader">loading</div> // Loading icon
               ) : 'Login'}
-              styles={`bg-[#1dc071] text-white py-2 mt-4 ${visited ? 'visited' : ''}`} // Add visited class
+              styles={`bg-[#1dc071] text-white py-2 mt-4 ${visited ? 'bg-green-500' : ''}`} // Add visited class
               disabled={loading} // Disable button while loading
             />
           </div>

@@ -1,8 +1,10 @@
+const { UPDATE_CAMPAIGN } = require("../../../../campaign/src/actions/campaign/campaignTypes");
 const { checkDeadline } = require("../../config.js/checkDeadline");
 const { checkTarget } = require("../../config.js/checkTarget");
 const Campaign = require("../../models/campaignModel");
 const Deadline = require("../../models/deadlineModel");
 const Target = require("../../models/targetModel");
+const { io } = require('../../../app');
 
 
 const updateCampaign = async (req, res) => {
@@ -25,9 +27,8 @@ const updateCampaign = async (req, res) => {
 
         if (!campaign) {
             return res.status(404).json({message: "Campaign not found"})
-        }
-
-       
+        } 
+                 
 
 
         const updatedCampaign = await Campaign.findByIdAndUpdate(
@@ -50,10 +51,22 @@ const updateCampaign = async (req, res) => {
             },
         )
 
-        
+        // const newNotification = new Notification({
+        //     userId: req.user._id,
+        //     message: `Campaign ${updateCampaign.name} updated Successfully`,
+        //     type: `UPDATE_CAMPAIGN`,
+        //     campaignId: campaign._id
+        // })
+
+        // if (!newNotification) {
+        //     return res.status(404).json({message: "Campaign Notification not Created"})
+
+
+        // }
+        //  await newNotification.save()
+
+         io.emit('campaignUpdated', {message: 'Campaign updated successfully', campaign})
         await updatedCampaign.save()
-
-
 
         // console.log(uodateC)
         res.status(200).json(updatedCampaign);

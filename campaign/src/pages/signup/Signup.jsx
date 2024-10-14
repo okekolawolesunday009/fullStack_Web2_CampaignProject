@@ -15,6 +15,9 @@ const Signup = ({signup}) => {
     })
 
     const {fullName,email, password, region} = formData
+    const [loading, setLoading] = useState(false); // Add loading state
+    const [visited, setVisited] = useState(false); // Add visited state
+  
     const navigate = useNavigate()
 
     const handleChange = (e) => {
@@ -26,10 +29,13 @@ const Signup = ({signup}) => {
     
       }
       const submit = (e) => {
+
         e.preventDefault()
-        console.log(formData)
+        setLoading(true)
+        setVisited(true)
         signup(fullName,email, password, region)
-        console.log(signup(fullName,email, password, region))
+        // console.log(signup(fullName,email, password, region))
+        setLoading(false)
       }
   return (
     <div className=' min-h-screen flex justify-center items-center  '>
@@ -84,10 +90,12 @@ const Signup = ({signup}) => {
 
                     <div className='flex m-auto justify-between'>
                         <CustomButton
-
                         btnType="submit"
-                        title={'Register'}
-                        styles = {`bg-[#1dc071]`}                       
+                        title={loading ? (
+                          <div className="loader">loading</div> // Loading icon
+                        ) : 'Register'}
+                        styles={`bg-[#1dc071] text-white py-2 mt-4 ${visited ? 'bg-green-500' : ''}`} // Add visited class
+                        disabled={loading} // Disable button while loading                     
                     
                     />
 

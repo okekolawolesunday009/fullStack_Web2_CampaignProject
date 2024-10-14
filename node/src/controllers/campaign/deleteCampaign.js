@@ -1,6 +1,5 @@
+const { io } = require("../../../app");
 const Campaign = require("../../models/campaignModel");
-const Deadline = require("../../models/deadlineModel");
-const Target = require("../../models/targetModel");
 
 
 
@@ -9,7 +8,10 @@ const deleteCampaign = async (req, res) => {
     try {
 
 
-        await Campaign.findByIdAndDelete(req.params.id)
+        const campaign = await Campaign.findByIdAndDelete(req.params.id)
+        if (campaign) {
+            io.emit('campaignDeleted', { message: 'Campaign deleted successfully', campaign });
+        }
         res.status(200).json({message: "Campaign deleted Successfully"})
 
     } catch (error) {

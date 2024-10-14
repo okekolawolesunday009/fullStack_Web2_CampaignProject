@@ -2,6 +2,7 @@ const Campaign = require('../../models/campaignModel');
 const Deadline = require('../../models/deadlineModel');
 const Target = require('../../models/targetModel')
 const {checkDeadline} = require('../../config.js/checkDeadline');
+const { io } = require('../../../app');
 // const { fileUpload } = require('../imageUpload/fileController');
 
 
@@ -110,6 +111,9 @@ const addCampaign = async (req, res) => {
             }
         });
         const savedCampaign = await newCampaign.save();
+        if (savedCampaign) {
+            io.emit('campaignAdded', { message: 'Campaign created successfully', savedCampaign });
+        }
       
       
         

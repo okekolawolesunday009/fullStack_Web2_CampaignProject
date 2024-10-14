@@ -7,24 +7,24 @@ import { userNormalizer } from "../schema/user"
 import { UPDATE_DEADLINE, UPDATE_TARGET } from "../actions/campaign/deadline/deadlineTargetTypes"
 
 
-export const initialState = {
+export const initialStateCampaign = {
     campaigns: [],
     loading: false,
     isCampaignAdded: false,
     isCampaignDeleted: false,
 }
- export const campaignReducer = (state= initialState, action) => {
+ export const campaignReducer = (state=initialStateCampaign, action) => {
     switch(action.type) {
       case FETCH_CAMPAIGN_REQUEST:
         return {
             ...state,
-            campaigns: action.campaign,
+            campaigns: action.campaigns,
             loading: true
         }
         case FETCH_CAMPAIGN:
             return {
                 ...state,
-                campaigns: action.campaign,
+                campaigns: action.campaigns,
                 loading: false
             }
         case CREATE_CAMPAIGN:

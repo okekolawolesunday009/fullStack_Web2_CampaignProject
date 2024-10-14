@@ -6,33 +6,35 @@ import { CREATE_CAMPAIGN, UPDATE_CAMPAIGN, DELETE_CAMPAIGN, FETCH_CAMPAIGN } fro
 import { loginSuccess } from '../ui/uiActionCreators';
 
 
-export const addCampaignSuccess = (campaign) => {
+export const addCampaignSuccess = (campaigns) => {
     return {
         type: CREATE_CAMPAIGN,
-        campaign
+        campaigns
     }
 }
 
-export const bondAddCampaignSuccess = (campaign) => (dispatch) => dispatch(addCampaignSuccess(campaign))
+export const bondAddCampaignSuccess = (campaigns) => (dispatch) => dispatch(addCampaignSuccess(campaigns))
 
-export const fetchCampaignSuccess = (campaign) => {
+export const fetchCampaignSuccess = (campaigns) => {
+    // console.log(campaigns)
+
     return {
         type: FETCH_CAMPAIGN,
-        campaign
+        campaigns
     }
 }
 
-export const bondfetchCampaignSuccess = (campaign) => (dispatch) => dispatch(fetchCampaignSuccess(campaign))
+export const bondfetchCampaignSuccess = (campaigns) => (dispatch) => dispatch(fetchCampaignSuccess(campaigns))
 
 
-export const updateCampaignSuccess = (campaign) => {
+export const updateCampaignSuccess = (campaigns) => {
     return {
         type: UPDATE_CAMPAIGN,
-        campaign
+        campaigns
     }
 }
 
-export const bondUpdateCampaignSuccess = (campaign) => (dispatch) => dispatch(updateCampaignSuccess(campaign))
+export const bondUpdateCampaignSuccess = (campaigns) => (dispatch) => dispatch(updateCampaignSuccess(campaigns))
 
 
 
@@ -42,7 +44,7 @@ export const deleteCampaignSuccess = () => {
     }
 }
 
-export const bondDeleteCampaignSuccess = (campaign) => (dispatch) => dispatch(deleteCampaignSuccess(campaign))
+export const bondDeleteCampaignSuccess = () => (dispatch) => dispatch(deleteCampaignSuccess())
 
 
 
@@ -55,30 +57,19 @@ export const failureResponse = (error) => {
 }
 export const bondAddCampaignFailure = (error) => (dispatch) => dispatch(failureResponse(error))
 
-export const fetchCampaignRequest = () => async (dispatch) => {
+export const fetchCampaignRequest = (campaigns, error) => async (dispatch) => {
     try {
-        const response = await axios.get(`${FURL}/api/campaign`)
-        // dispatch(fetchCampaignSuccess(response.data.campaigns));
+        
+        dispatch(fetchCampaignSuccess(campaigns));
     
-        // dispatch()
-    } catch (error) {
-        dispatch(failureResponse(error.response ? error.response.data : error.message));
+    } catch (err) {
+        dispatch(failureResponse(error));
+        console.log(err)
 
     }
 };
 
-export const fetchCampaignByIdRequest = (id) => async (dispatch) => {
-    try {
-        const response = await axios.get(`${FURL}/api/campaign/${id}`)
-        dispatch(fetchCampaignSuccess(response.data.campaigns));
 
-        return response.data.campaigns
-    
-    } catch (error) {
-        dispatch(failureResponse(error.response ? error.response.data : error.message));
-
-    }
-};
 
 
 export const bondFetchCampaign = (campaign) => (dispatch) => dispatch(fetchCampaignRequest(campaign))
@@ -125,14 +116,9 @@ export const updateCampaignRequest = (name, description, category, target, deadl
                   'Content-Type': 'multipart/form-data', // Ensure the request is handled as form data
               },
           });
-
-          console.log(data)
-  
-      
-          
-       
-        dispatch(updateCampaignSuccess(response.data.campaign));
-        console.log(dispatch(updateCampaignSuccess(response.data.campaign)))
+                 
+        dispatch(updateCampaignSuccess(response.data.campaigns));
+        console.log(dispatch(updateCampaignSuccess(response.data.campaigns)))
         // console.log(loginSuccess(response.data.user))
         toast.success('Succesfully Updated Campaign')
         dispatch()
@@ -145,7 +131,6 @@ export const updateCampaignRequest = (name, description, category, target, deadl
 
 export const deleteCampaignRequest = (id) => async (dispatch) => {
     try {
-        console.log(id)
 
         const token = localStorage.getItem('token');
         const response = await axios.delete(`${FURL}/api/campaign/${id}`, {
@@ -153,7 +138,7 @@ export const deleteCampaignRequest = (id) => async (dispatch) => {
                 'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
             },
         });
-        dispatch(deleteCampaignSuccess(response.data.campaigns));
+        dispatch(deleteCampaignSuccess());
         // console.log(dispatch(loginSuccess(response.data.user)))
         // console.log(loginSuccess(response.data.user))
         toast.success('Succesfully Deleted Campaign')

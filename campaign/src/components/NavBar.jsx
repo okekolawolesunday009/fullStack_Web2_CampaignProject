@@ -29,7 +29,7 @@ const NavBar = ({hideNotificationDrawer, displayNotificationDrawer, displayDrawe
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    console.log(displayDrawer)
+    // console.log(displayDrawer)
   })
 
   const handleNavLink = () => {
