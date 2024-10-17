@@ -30,38 +30,42 @@ const closed = () => {
 
 function FunCard({ campaign, isLoggedIn, deleteCampaign}) {
   // console.log(campaign.target, isLoggedIn)
+  const [loading, setLoading] = useState(false);  // Loading state
+  const [daysRemaining, setDaysRemaining] = useState(null);
+  const [truncateText, setTruncateText] = useState("")
 
   const navigate = useNavigate()
 
   const handleDelete = async (e) => {
     const validateDelete = window.confirm('Do you want to delete camapign')
     e.preventDefault()
+    setLoading(true); 
 
-    if (validateDelete) {
+    if (!validateDelete) return 
       console.log(campaign._id, campaign.target.target)
       try {
         // await deleteCampaign(campaign._id);
-        if (await deleteCampaign(campaign._id)) return navigate('/dashboard');
+        if (await deleteCampaign(campaign._id)) {
+          setLoading(false) 
+          return navigate('/dashboard');
+        }
         // console.log("Campaign deleted");
       } catch (error) {
+        setLoading(false)
         console.error("Error deleting campaign:", error);
       }
-    }
+    
   }
-  const [daysRemaining, setDaysRemaining] = useState(null);
-  const [truncateText, setTruncateText] = useState("")
+
 
   useEffect(() => {
       if (campaign && campaign.deadline && campaign.deadline.deadline) {
           const days = Math.ceil((new Date(campaign.deadline.deadline) - new Date()) / (1000 * 60 * 60 * 24));
           setDaysRemaining(days);
-          console.log(daysRemaining, campaign.deadline.deadline);
       }
 
       // setTruncateText(truncate(campaign.description, 10))
       // console.log(setTruncateText(truncate(campaign.description, 40)))
-
-
       
   }, [campaign]); // Runs whenever campaign changes
 
@@ -69,50 +73,60 @@ function FunCard({ campaign, isLoggedIn, deleteCampaign}) {
  
   
   return (
-    <div className={css(styles.cardContainer)} >
-      <Link to={`/campaign/update/${campaign._id}`}>
-      <div className={css(styles.imageContainer)} >
-        <img className={css(styles.image)} src={campaign.image} alt={campaign.name} />
-      </div>
-      </Link>
-     
-      <div className={css(styles.innerCard)}>
-        <div className={css(styles.imgCategory)}>
-          <CiFolderOn size={20} />
-          <p className={css(styles.category)}>{campaign.category}</p>
-        </div>
-        <div className={css(styles.block)}>
-          <h3 className={css(styles.title)}>{campaign.name}</h3>
-          <p className={css(styles.description)}>{campaign.description}</p>
-        </div>
-        <div className={css(styles.blockDetails)}>
-          <div className={css(styles.detailItem)}>
-            <h3 className={css(styles.amount)}>${campaign.target.target}</h3>
-            <p className={css(styles.label)}>Amount Received</p>
-          </div>
-          <div className={css(styles.detailItem)}>
-            <h3 className={`${css(styles.amount)} ${css(styles.active)}`}>
-              {daysRemaining  > 0 ? daysRemaining : closed}
-              <span className={`${css(daysRemaining > 0 ? styles.activeIndicator: '')}`}></span>
-            </h3>
-            {daysRemaining > 0 ? <p className={css(styles.label)}>Days left</p> : ""}
-          </div>
-        </div>
-        <div className={`flex justify-between ${isLoggedIn === true ? 'block': 'hidden'}`}>
 
-         <Link to={`/campaign/update/${campaign._id}`}>
-             <FiEdit3 className='text-green-500'/> 
-          
+    <div className={css(styles.cardContainer)} >
+      {loading ? (
+         <div className="loading-spinner">Loading...</div> 
+      ) : (
+        <>
+          <Link to={`/campaign/update/${campaign._id}`}>
+          <div className={css(styles.imageContainer)} >
+            <img className={css(styles.image)} src={campaign.image} alt={campaign.name} />
+          </div>
           </Link>
-          
-          <MdDelete className='text-red-500' fill='red ' onClick={handleDelete}/>          
-        </div>
-      </div>
-      <div className={css(styles.footer)}>
-        <FaRegUserCircle size={16} />
-        <h3 className={css(styles.owner)}>{campaign.owner}</h3>
-      </div>
+        
+          <div className={css(styles.innerCard)}>
+            <div className={css(styles.imgCategory)}>
+              <CiFolderOn size={20} />
+              <p className={css(styles.category)}>{campaign.category}</p>
+            </div>
+            <div className={css(styles.block)}>
+              <h3 className={css(styles.title)}>{campaign.name}</h3>
+              <p className={css(styles.description)}>{campaign.description}</p>
+            </div>
+            <div className={css(styles.blockDetails)}>
+              <div className={css(styles.detailItem)}>
+                <h3 className={css(styles.amount)}>${campaign.target.target}</h3>
+                <p className={css(styles.label)}>Amount Received</p>
+              </div>
+              <div className={css(styles.detailItem)}>
+                <h3 className={`${css(styles.amount)} ${css(styles.active)}`}>
+                  {daysRemaining  > 0 ? daysRemaining : closed}
+                  <span className={`${css(daysRemaining > 0 ? styles.activeIndicator: '')}`}></span>
+                </h3>
+                {daysRemaining > 0 ? <p className={css(styles.label)}>Days left</p> : ""}
+              </div>
+            </div>
+            <div className={`flex justify-between ${isLoggedIn === true ? 'block': 'hidden'}`}>
+
+            <Link to={`/campaign/update/${campaign._id}`}>
+                <FiEdit3 className='text-green-500'/> 
+              
+              </Link>
+              
+              <MdDelete className='text-red-500' fill='red ' onClick={handleDelete}/>          
+            </div>
+          </div>
+          <div className={css(styles.footer)}>
+            <FaRegUserCircle size={16} />
+            <h3 className={css(styles.owner)}>{campaign.owner}</h3>
+          </div>
+        </>
+        )}
+       
     </div>
+   
+    
   );
 }
 
